@@ -5,6 +5,7 @@ import IntroVideo from "./IntroVideo";
 import ClassVideo from "./ClassVideo";
 import ConclusionVideo from "./ConclusionVideo";
 import NewIntroVideoForm from "./NewIntroVideoForm";
+import NewConclusionVideoForm from "./NewConclusionVideoForm";
 
 function CourseVideos({ onNext, onPrevious }) {
   const { introVideos, classVideos, conclusionVideos } = useCourseDetailStore();
@@ -97,25 +98,36 @@ function CourseVideos({ onNext, onPrevious }) {
           </h2>
 
           <div className="space-y-3.5">
-            {conclusionVideos.length > 0 ? (
-              conclusionVideos.map((video, index) => (
-                <ConclusionVideo
-                  key={video.id}
-                  id={video.id}
-                  videoIndex={index}
-                  video={video}
-                />
-              ))
-            ) : (
-              <p className="text-red-400">Add a conclusion video</p>
+            {conclusionVideos.length > 0
+              ? conclusionVideos.map((video, index) => (
+                  <ConclusionVideo
+                    key={video.id}
+                    id={video.id}
+                    videoIndex={index}
+                    video={video}
+                  />
+                ))
+              : !isNewConclusionVideoOpen && (
+                  <p className="text-red-400">Add a conclusion video</p>
+                )}
+
+            {isNewConclusionVideoOpen && (
+              <NewConclusionVideoForm
+                index={conclusionVideos.length}
+                onCancel={() => setIsNewConclusionVideoOpen(false)}
+              />
             )}
           </div>
 
           <div className="mt-6 flex justify-center">
             <button
               type="button"
-              className="font-semibold text-sm text-[var(--text-secondary)] border-b border-[var(--text-secondary)] cursor-pointer"
-              // onClick={addNewConclusionVideo}
+              className={`font-semibold text-sm text-[var(--text-secondary)] border-b border-[var(--text-secondary)] ${
+                isNewConclusionVideoOpen
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+              onClick={() => setIsNewConclusionVideoOpen(true)}
             >
               + Add Module
             </button>

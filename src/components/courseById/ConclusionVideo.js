@@ -1,10 +1,24 @@
 "use client";
 import React, { useState } from "react";
+import { useEditConclusionVideoStore } from "@/store/editConclusionVideoStore";
 import { LiaTrashAlt } from "react-icons/lia";
-import { LuMinus, LuPlus } from "react-icons/lu";
+import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
+import EditConclusionVideo from "./EditConclusionVideo";
+import ConclusionVideoDetail from "./ConclusionVideoDetail";
 
 export default function ConclusionVideo({ id, videoIndex, video }) {
+  const { selectedConclusionVideoId, setConclusionVideoId } =
+    useEditConclusionVideoStore();
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleDelete = () => {
+    // Call delete logic here
+    console.log("Deleting video", id);
+    setShowDeleteConfirm(false);
+  };
 
   return (
     <div className="px-8 py-4 bg-[var(--background-primary)] rounded-2xl drop-shadow-md dark:border dark:border-[var(--border-secondary)]">
@@ -16,7 +30,7 @@ export default function ConclusionVideo({ id, videoIndex, video }) {
           {/* <button
             type="button"
             className="flex justify-center items-center cursor-pointer"
-            onClick={() => setIsDeleteIntroVideoOpen(true)}
+            onClick={() => setIsDeleteConclusionVideoOpen(true)}
             title="Delete"
 
           >
@@ -44,11 +58,40 @@ export default function ConclusionVideo({ id, videoIndex, video }) {
           isExpanded ? "max-h-[1000px] mt-4" : "max-h-0"
         }`}
       >
-        <h3 className="text-[var(--text-secondary)] text-sm font-normal">
-          {video?.title}
-        </h3>
+        {isEdit && id === selectedConclusionVideoId ? (
+          <EditConclusionVideo
+            videoIndex={videoIndex}
+            video={video}
+            onCancel={() => setIsEdit(false)}
+            onUpdate={() => setIsEdit(false)}
+          />
+        ) : (
+          <ConclusionVideoDetail videoIndex={videoIndex} video={video} />
+        )}
+
+        {/* Bottom right buttons */}
+        {(!isEdit || id !== selectedConclusionVideoId) && (
+          <>
+            <div className="flex justify-end gap-4 mt-6">
+              <button
+                onClick={() => {
+                  setConclusionVideoId(id);
+                  setIsEdit(true);
+                }}
+                className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-xl"
+              >
+                Delete
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
-import { useNewIntroVideoStore } from "@/store/newIntroVideoStore";
+import { useNewConclusionVideoStore } from "@/store/newConclusionVideoStore";
 import { useCourseDetailStore } from "@/store/courseDetailStore";
 import ModuleMaterial from "./ModuleMaterial";
 
@@ -9,38 +9,40 @@ import { LiaTrashAlt } from "react-icons/lia";
 import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
 import toast from "react-hot-toast";
 
-export default function NewIntroVideoForm({ index, onCancel }) {
+export default function NewConclusionVideoForm({ index, onCancel }) {
   const { courseId } = useParams();
 
   const {
-    newIntroVideoDetails,
-    setNewIntroVideoDetails,
-    addNewIntroVideo,
-    resetNewIntroVideo,
-  } = useNewIntroVideoStore();
+    newConclusionVideoDetails,
+    setNewConclusionVideoDetails,
+    addNewConclusionVideo,
+    resetNewConclusionVideo,
+  } = useNewConclusionVideoStore();
   const { getCourseById } = useCourseDetailStore();
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isAddIntroMaterialOpen, setIsAddIntroMaterialOpen] = useState(false);
-  const [isAddIntroVideoOpen, setIsAddIntroVideoOpen] = useState(false);
+  const [isAddConclusionMaterialOpen, setIsAddConclusionMaterialOpen] =
+    useState(false);
+  const [isAddConclusionVideoOpen, setIsAddConclusionVideoOpen] =
+    useState(false);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setNewIntroVideoDetails(name, value); // in the store for form submission
+    setNewConclusionVideoDetails(name, value); // in the store for form submission
   };
 
   const handleVideoThumbnail = (e) => {
     const name = e.target.name;
     const file = e.target.files[0];
 
-    setNewIntroVideoDetails(name, file); // in the store for form submission
+    setNewConclusionVideoDetails(name, file); // in the store for form submission
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(newIntroVideoDetails);
-    const { title, image, videoId } = newIntroVideoDetails;
+    console.log(newConclusionVideoDetails);
+    const { title, image, videoId } = newConclusionVideoDetails;
 
     if (!title || !videoId || !image) {
       toast("Please add title, image and video");
@@ -48,7 +50,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
     }
 
     try {
-      const res = await addNewIntroVideo();
+      const res = await addNewConclusionVideo();
       console.log(res);
       onCancel(); // close edit section
       getCourseById(courseId);
@@ -63,8 +65,8 @@ export default function NewIntroVideoForm({ index, onCancel }) {
         <h3 className="font-semibold text-sm text-[var(--text-secondary)]">
           {index + 1}
           <span className="ms-4">
-            {newIntroVideoDetails?.title
-              ? newIntroVideoDetails?.title
+            {newConclusionVideoDetails?.title
+              ? newConclusionVideoDetails?.title
               : "Untitled Video"}
           </span>
         </h3>
@@ -99,10 +101,10 @@ export default function NewIntroVideoForm({ index, onCancel }) {
             <div className="w-4/5 flex gap-x-3">
               <div className="flex-1 space-y-6">
                 <input
-                  id={`introTitle-${index + 1}`}
+                  id={`conclusionTitle-${index + 1}`}
                   type="text"
                   name="title"
-                  value={newIntroVideoDetails?.title}
+                  value={newConclusionVideoDetails?.title}
                   className="w-full h-10 px-3.5 py-2 text-sm text-[var(--text-secondary)] border border-[var(--border-primary)] rounded-xl outline-none placeholder:text-[var(--text-placeholder)] placeholder:italic focus:border-[var(--border-secondary)]"
                   placeholder="Type here"
                   onChange={handleOnChange}
@@ -112,12 +114,12 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                   <button
                     className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                     type="button"
-                    // onClick={() => setIsAddIntroVideoOpen(true)}
+                    // onClick={() => setIsAddConclusionVideoOpen(true)}
                   >
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
-                      Intro Video
+                      Conclusion Video
                     </span>
-                    {newIntroVideoDetails?.videoId > 0 && (
+                    {newConclusionVideoDetails?.videoId > 0 && (
                       <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                     )}
                   </button>
@@ -125,12 +127,12 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                   <button
                     className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                     type="button"
-                    onClick={() => setIsAddIntroMaterialOpen(true)}
+                    onClick={() => setIsAddConclusionMaterialOpen(true)}
                   >
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
                       Module materials
                     </span>
-                    {newIntroVideoDetails?.pdf?.name && (
+                    {newConclusionVideoDetails?.pdf?.name && (
                       <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                     )}
                   </button>
@@ -141,9 +143,9 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                 <button
                   type="button"
                   className="h-10 p-4 text-sm rounded-xl bg-[#72c347] text-[var(--background-primary)] cursor-pointer flex justify-center items-center"
-                  //   onClick={() => setIsAddIntroVideoOpen(true)}
+                  //   onClick={() => setIsAddConclusionVideoOpen(true)}
                 >
-                  {newIntroVideoDetails?.videoId
+                  {newConclusionVideoDetails?.videoId
                     ? "Change Video"
                     : "+ Add Video"}
                 </button>
@@ -153,14 +155,16 @@ export default function NewIntroVideoForm({ index, onCancel }) {
             <div className="w-1/5">
               <div>
                 <label
-                  htmlFor={`introVideoThumbnail-${index + 1}`}
+                  htmlFor={`conclusionVideoThumbnail-${index + 1}`}
                   className="text-base text-[var(--text-secondary)] font-semibold cursor-pointer"
                 >
-                  {newIntroVideoDetails?.image?.name ? (
+                  {newConclusionVideoDetails?.image?.name ? (
                     <div className="w-full h-32 rounded-2xl border border-[var(--border-primary)] overflow-hidden flex justify-center items-center">
                       <img
-                        src={URL.createObjectURL(newIntroVideoDetails?.image)}
-                        alt={newIntroVideoDetails?.title || "Thumbnail"}
+                        src={URL.createObjectURL(
+                          newConclusionVideoDetails?.image
+                        )}
+                        alt={newConclusionVideoDetails?.title || "Thumbnail"}
                         className="w-full"
                       />
                     </div>
@@ -172,7 +176,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                     </div>
                   )}
                   <input
-                    id={`introVideoThumbnail-${index + 1}`}
+                    id={`conclusionVideoThumbnail-${index + 1}`}
                     type="file"
                     accept="image/*"
                     name="image"
@@ -190,7 +194,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
               type="button"
               onClick={() => {
                 onCancel();
-                resetNewIntroVideo(); //reset store
+                resetNewConclusionVideo(); //reset store
               }}
               className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl"
             >
@@ -205,11 +209,11 @@ export default function NewIntroVideoForm({ index, onCancel }) {
           </div>
         </form>
       </div>
-      {isAddIntroMaterialOpen && (
+      {isAddConclusionMaterialOpen && (
         <ModuleMaterial
-          video={newIntroVideoDetails}
-          onFileChange={setNewIntroVideoDetails}
-          onClose={() => setIsAddIntroMaterialOpen(false)}
+          video={newConclusionVideoDetails}
+          onFileChange={setNewConclusionVideoDetails}
+          onClose={() => setIsAddConclusionMaterialOpen(false)}
         />
       )}
     </div>

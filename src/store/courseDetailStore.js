@@ -12,8 +12,7 @@ export const useCourseDetailStore = create((set) => ({
       videoThumbnail:
         "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755523/pealen/i9dvdv893eweu4fxwtbb.jpg",
       videoUrl: "eqNYOr74NeBxdDcejjenRrupMNsBBoKiHUkzEDNTHhk",
-      muxUploadId: "CwGPD01CmmjgEN18l7bblIjLMs5KjRRXZuZ2Gde3FbsU",
-      muxAssetId: "RH9T201Hc3y02SZwXGGDPBE2oiJeSF9tZsUzpYaQHFNmw",
+      videoId: "CwGPD01CmmjgEN18l7bblIjLMs5KjRRXZuZ2Gde3FbsU",
       moduleMaterial:
         "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755524/pealen/obbgp29g5dz2iqdniyxr.pdf",
       videoType: "intro",
@@ -24,15 +23,37 @@ export const useCourseDetailStore = create((set) => ({
       videoThumbnail:
         "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755525/pealen/wmz8dbvprpeydtaufaci.jpg",
       videoUrl: "bH8loCsO5iduNd01oVqwaZ6MiWmvDk9nVkpLfekrT6VU",
-      muxUploadId: "MGrRj1jVNfgidlYeMLzmiymE51pAkpJZ54t4hSNlRVQ",
-      muxAssetId: "PodZ7gKdz71uiX1WE5XJAcMoR461dsQrKzLxkYpPefI",
+      videoId: "MGrRj1jVNfgidlYeMLzmiymE51pAkpJZ54t4hSNlRVQ",
       moduleMaterial:
         "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755525/pealen/ujgmxpu36ijupkis3svn.pdf",
       videoType: "intro",
     },
   ],
   classVideos: [],
-  conclusionVideos: [],
+  conclusionVideos: [
+    {
+      id: "40b08fd6-e2a2-49fc-aa74-914d4fa04b3d",
+      title: "Conclusion Video 1",
+      videoThumbnail:
+        "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755523/pealen/i9dvdv893eweu4fxwtbb.jpg",
+      videoUrl: "eqNYOr74NeBxdDcejjenRrupMNsBBoKiHUkzEDNTHhk",
+      videoId: "CwGPD01CmmjgEN18l7bblIjLMs5KjRRXZuZ2Gde3FbsU",
+      moduleMaterial:
+        "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755524/pealen/obbgp29g5dz2iqdniyxr.pdf",
+      videoType: "conclusion",
+    },
+    {
+      id: "e85a0028-30ff-4910-aee4-c21ecb1899be",
+      title: "Conclusion Video 2",
+      videoThumbnail:
+        "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755525/pealen/wmz8dbvprpeydtaufaci.jpg",
+      videoUrl: "bH8loCsO5iduNd01oVqwaZ6MiWmvDk9nVkpLfekrT6VU",
+      videoId: "MGrRj1jVNfgidlYeMLzmiymE51pAkpJZ54t4hSNlRVQ",
+      moduleMaterial:
+        "https://res.cloudinary.com/dppck3c2b/image/upload/v1752755525/pealen/ujgmxpu36ijupkis3svn.pdf",
+      videoType: "conclusion",
+    },
+  ],
 
   certificateDetails: {},
 
