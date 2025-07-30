@@ -21,6 +21,8 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
   const { getCourseById } = useCourseDetailStore();
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [isAddConclusionMaterialOpen, setIsAddConclusionMaterialOpen] =
     useState(false);
   const [isAddConclusionVideoOpen, setIsAddConclusionVideoOpen] =
@@ -40,22 +42,28 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    console.log(newConclusionVideoDetails);
     const { title, image, videoId } = newConclusionVideoDetails;
 
     if (!title || !videoId || !image) {
       toast("Please add title, image and video");
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      const res = await addNewConclusionVideo();
-      console.log(res);
+      const res = await addNewConclusionVideo(courseId);
+
+      toast.success("Conclusion Video added successfully");
+      resetNewConclusionVideo(); //reset store
       onCancel(); // close edit section
       getCourseById(courseId);
     } catch (error) {
       console.log(error);
+      toast.error("Error adding Conclusion Video.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -190,7 +198,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
 
           {/* form buttons  */}
           <div className="flex justify-end gap-4 mt-6">
-            <button
+            {/* <button
               type="button"
               onClick={() => {
                 onCancel();
@@ -203,6 +211,28 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
             <button
               type="submit"
               className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl"
+            >
+              Submit
+            </button> */}
+
+            <button
+              type="button"
+              onClick={() => {
+                onCancel();
+                resetNewConclusionVideo(); //reset store
+              }}
+              className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+                isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+                isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+              disabled={isSubmitting}
             >
               Submit
             </button>

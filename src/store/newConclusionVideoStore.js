@@ -1,11 +1,12 @@
 import { create } from "zustand";
+import { createCourseVideos } from "@/api/course";
 
 export const useNewConclusionVideoStore = create((set, get) => ({
   newConclusionVideoDetails: {
     videoType: "conclusion",
     title: "",
-    videoUrl: "",
-    videoId: "",
+    videoUrl: "https://vimeo.com/manage/videos/1104073672",
+    videoId: "1104073672",
     image: null,
     pdf: null,
   },
@@ -21,30 +22,34 @@ export const useNewConclusionVideoStore = create((set, get) => ({
     });
   },
 
-  addNewConclusionVideo: async () => {
+  addNewConclusionVideo: async (courseId) => {
     try {
       const { newConclusionVideoDetails } = get();
 
+      const conclusionVideos = [newConclusionVideoDetails];
+
       const formData = new FormData();
 
-      formData.append("videoType", newConclusionVideoDetails.videoType);
-      formData.append("title", newConclusionVideoDetails.title);
-      formData.append("videoUrl", newConclusionVideoDetails.videoUrl);
-      formData.append("videoId", newConclusionVideoDetails.videoId);
+      const conclusionVideosJson = conclusionVideos.map(
+        ({ title, videoUrl, videoId, videoType }) => ({
+          title,
+          videoUrl,
+          videoId,
+          videoType,
+        })
+      );
+      formData.append("conclusionVideos", JSON.stringify(conclusionVideosJson));
 
-      if (newConclusionVideoDetails.image) {
-        formData.append("image", newConclusionVideoDetails.image);
-      }
-
-      if (newConclusionVideoDetails.pdf) {
-        formData.append("pdf", newConclusionVideoDetails.pdf);
-      }
-
-      // console.log(formData);
+      conclusionVideos.forEach((video, i) => {
+        if (video.image)
+          formData.append(`conclusionVideos[${i}][image]`, video.image);
+        if (video.pdf)
+          formData.append(`conclusionVideos[${i}][pdf]`, video.pdf);
+      });
 
       // ✅ Call your imported API here
-      // const response = await createNewConclusionVideo(formData);
-      // return response.data;
+      const res = await createCourseVideos(courseId, formData);
+      return res;
     } catch (error) {
       throw error;
     }

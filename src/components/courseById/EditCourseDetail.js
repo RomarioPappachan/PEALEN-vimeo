@@ -212,12 +212,12 @@ export default function EditCourseDetails({ onNext, onEdit }) {
     handleEditCourse();
   };
 
-  // if (!isCategoryLoaded)
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       Loading resources...
-  //     </div>
-  //   );
+  if (!isCategoryLoaded)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading resources...
+      </div>
+    );
 
   return (
     <div>

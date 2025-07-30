@@ -34,10 +34,7 @@ export default function IntroVideoDetail({ videoIndex, video }) {
 
       <div className="w-1/5">
         <div>
-          <div
-            htmlFor={`introVideoThumbnail-${videoIndex}`}
-            className="text-base text-[var(--text-secondary)] font-semibold cursor-pointer"
-          >
+          <div className="text-base text-[var(--text-secondary)] font-semibold cursor-pointer">
             {video?.videoThumbnail ? (
               <div className="w-full h-32 rounded-2xl border border-[var(--border-primary)] overflow-hidden flex justify-center items-center">
                 <img

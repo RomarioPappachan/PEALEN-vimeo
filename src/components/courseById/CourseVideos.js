@@ -6,6 +6,7 @@ import ClassVideo from "./ClassVideo";
 import ConclusionVideo from "./ConclusionVideo";
 import NewIntroVideoForm from "./NewIntroVideoForm";
 import NewConclusionVideoForm from "./NewConclusionVideoForm";
+import NewClassVideoForm from "./NewClassVideoForm";
 
 function CourseVideos({ onNext, onPrevious }) {
   const { introVideos, classVideos, conclusionVideos } = useCourseDetailStore();
@@ -66,25 +67,35 @@ function CourseVideos({ onNext, onPrevious }) {
           </h2>
 
           <div className="space-y-3.5">
-            {classVideos.length > 0 ? (
-              classVideos.map((video, index) => (
-                <ClassVideo
-                  key={video.id}
-                  id={video.id}
-                  videoIndex={index}
-                  video={video}
-                />
-              ))
-            ) : (
-              <p className="text-red-400">Add a class video</p>
+            {classVideos.length > 0
+              ? classVideos.map((video, index) => (
+                  <ClassVideo
+                    key={video.id}
+                    id={video.id}
+                    videoIndex={index}
+                    video={video}
+                  />
+                ))
+              : !isNewClassVideoOpen && (
+                  <p className="text-red-400">Add a class video</p>
+                )}
+
+            {isNewClassVideoOpen && (
+              <NewClassVideoForm
+                index={classVideos.length}
+                onCancel={() => setIsNewClassVideoOpen(false)}
+              />
             )}
           </div>
 
           <div className="mt-6 flex justify-center">
             <button
               type="button"
-              className="font-semibold text-sm text-[var(--text-secondary)] border-b border-[var(--text-secondary)] cursor-pointer"
-              // onClick={addNewClassVideo}
+              className={`font-semibold text-sm text-[var(--text-secondary)] border-b border-[var(--text-secondary)]  ${
+                isNewClassVideoOpen ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+              onClick={() => setIsNewClassVideoOpen(true)}
+              disabled={isNewClassVideoOpen}
             >
               + Add Module
             </button>

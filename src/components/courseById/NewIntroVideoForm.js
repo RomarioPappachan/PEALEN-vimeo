@@ -21,6 +21,8 @@ export default function NewIntroVideoForm({ index, onCancel }) {
   const { getCourseById } = useCourseDetailStore();
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [isAddIntroMaterialOpen, setIsAddIntroMaterialOpen] = useState(false);
   const [isAddIntroVideoOpen, setIsAddIntroVideoOpen] = useState(false);
 
@@ -38,22 +40,28 @@ export default function NewIntroVideoForm({ index, onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    console.log(newIntroVideoDetails);
     const { title, image, videoId } = newIntroVideoDetails;
 
     if (!title || !videoId || !image) {
       toast("Please add title, image and video");
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      const res = await addNewIntroVideo();
-      console.log(res);
+      const res = await addNewIntroVideo(courseId);
+
+      toast.success("Intro Video added successfully");
+      resetNewIntroVideo(); //reset store
       onCancel(); // close edit section
       getCourseById(courseId);
     } catch (error) {
       console.log(error);
+      toast.error("Error adding Intro Video.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -192,13 +200,18 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                 onCancel();
                 resetNewIntroVideo(); //reset store
               }}
-              className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl"
+              className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+                isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl"
+              className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+                isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+              disabled={isSubmitting}
             >
               Submit
             </button>
