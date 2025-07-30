@@ -1,0 +1,53 @@
+"use client";
+
+import React from "react";
+import { createPortal } from "react-dom";
+
+import { LuX } from "react-icons/lu";
+
+export default function ViewMaterial({ fileType = "pdf", fileLink, onClose }) {
+  return createPortal(
+    <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-center px-2 py-6">
+      <div className="relative w-full max-w-2xl h-auto max-h-[90vh] bg-[var(--background-primary)] rounded-2xl overflow-hidden flex flex-col items-center pb-8">
+        {/* Close Button */}
+        <button
+          type="button"
+          onClick={() => onClose(false)}
+          className="absolute top-3 right-3 size-9 rounded-lg bg-[#DF5050] text-white flex justify-center items-center z-10 cursor-pointer"
+        >
+          <LuX className="text-xl" />
+        </button>
+
+        {/* Header */}
+        <div className="pt-6 px-6 pb-3 w-full text-center">
+          <h2 className="text-base md:text-lg font-semibold text-[var(--text-secondary)]">
+            {fileType === "srt" ? "Video Transcript" : "Module Material"}
+          </h2>
+        </div>
+
+        {/* File Upload */}
+        <div className="flex flex-col items-center justify-center px-6 py-10 w-full">
+          {fileLink ? (
+            <div className="mt-5 flex flex-col items-center space-y-3">
+              <p className="text-center text-sm md:text-base text-[var(--text-secondary)] break-words max-w-xs md:max-w-md lg:max-w-lg">
+                <span className="font-semibold">
+                  Selected
+                  {fileType === "srt"
+                    ? " Video Transcript"
+                    : " Module Material"}{" "}
+                </span>
+                : <br />
+                <span className="font-medium">{fileLink}</span>
+              </p>
+            </div>
+          ) : (
+            <p className="text-center text-sm md:text-base text-[var(--text-secondary)]">
+              No file available
+            </p>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}

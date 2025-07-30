@@ -20,7 +20,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
   } = useNewConclusionVideoStore();
   const { getCourseById } = useCourseDetailStore();
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isAddConclusionMaterialOpen, setIsAddConclusionMaterialOpen] =
@@ -127,7 +127,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
                       Conclusion Video
                     </span>
-                    {newConclusionVideoDetails?.videoId > 0 && (
+                    {newConclusionVideoDetails?.videoId && (
                       <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                     )}
                   </button>

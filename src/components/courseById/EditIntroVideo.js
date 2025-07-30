@@ -99,7 +99,7 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
                   <span className="text-sm text-[var(--border-secondary)] font-semibold">
                     Intro Video
                   </span>
-                  {updatedIntroVideoDetails?.videoId > 0 && (
+                  {updatedIntroVideoDetails?.videoId && (
                     <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                   )}
                 </button>

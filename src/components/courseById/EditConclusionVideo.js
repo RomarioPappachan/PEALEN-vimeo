@@ -102,7 +102,7 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
                   <span className="text-sm text-[var(--border-secondary)] font-semibold">
                     Conclusion Video
                   </span>
-                  {updatedConclusionVideoDetails?.videoId > 0 && (
+                  {updatedConclusionVideoDetails?.videoId && (
                     <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                   )}
                 </button>

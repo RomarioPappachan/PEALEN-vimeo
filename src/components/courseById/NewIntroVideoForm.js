@@ -20,7 +20,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
   } = useNewIntroVideoStore();
   const { getCourseById } = useCourseDetailStore();
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isAddIntroMaterialOpen, setIsAddIntroMaterialOpen] = useState(false);
@@ -125,7 +125,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
                       Intro Video
                     </span>
-                    {newIntroVideoDetails?.videoId > 0 && (
+                    {newIntroVideoDetails?.videoId && (
                       <LuCircleCheckBig className="text-xl text-[var(--border-secondary)]" />
                     )}
                   </button>
