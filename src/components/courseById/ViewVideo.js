@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { LuX } from "react-icons/lu";
 
 export default function ViewVideo({ videoTitle, videoId, onClose }) {
+  const videoUrl = `https://player.vimeo.com/video/${videoId}`;
   return createPortal(
     <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-center px-2 py-6">
       <div className="relative w-full max-w-2xl h-auto max-h-[90vh] bg-[var(--background-primary)] rounded-2xl overflow-hidden flex flex-col items-center pb-8">
@@ -31,7 +32,7 @@ export default function ViewVideo({ videoTitle, videoId, onClose }) {
             <div className="mt-5 flex flex-col items-center space-y-3">
               <iframe
                 title="vimeo-player"
-                src={`https://player.vimeo.com/video/${videoId}`}
+                src={videoUrl}
                 width="540"
                 height="320"
                 frameBorder="0"

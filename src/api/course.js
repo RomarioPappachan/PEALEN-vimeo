@@ -69,6 +69,29 @@ export const createCourseVideos = async (courseId, videosData) => {
   }
 };
 
+export const updateVideoById = async (videoId, updatedData) => {
+  try {
+    const res = await axiosInstance.put(
+      `/videos/updateVideoInCourse/${videoId}`,
+      updatedData
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to update course");
+  }
+};
+
+export const deleteVideoById = async (videoId) => {
+  try {
+    const res = await axiosInstance.delete(
+      `/videos/deleteVideoFromCourse/${videoId}`
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to delete video");
+  }
+};
+
 export const createCourseCertificate = async (courseId, certificateDetails) => {
   try {
     const res = await axiosInstance.post(

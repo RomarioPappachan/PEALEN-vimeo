@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { updateVideoById } from "@/api/course";
 
 export const useEditConclusionVideoStore = create((set, get) => ({
   selectedConclusionVideoId: null,
@@ -57,9 +58,10 @@ export const useEditConclusionVideoStore = create((set, get) => ({
     });
   },
 
-  updateConclusionVideo: async () => {
+  updateConclusionVideoById: async () => {
     try {
-      const { updatedConclusionVideoDetails } = get();
+      const { selectedConclusionVideoId, updatedConclusionVideoDetails } =
+        get();
 
       const formData = new FormData();
 
@@ -87,11 +89,9 @@ export const useEditConclusionVideoStore = create((set, get) => ({
         );
       }
 
-      // console.log(formData);
-
       // ✅ Call your imported API here
-      // const response = await updateConclusionVideoById(formData);
-      // return response.data;
+      const res = await updateVideoById(selectedConclusionVideoId, formData);
+      return res.data;
     } catch (error) {
       throw error;
     }

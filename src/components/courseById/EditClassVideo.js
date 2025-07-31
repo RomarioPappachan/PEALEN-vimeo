@@ -18,7 +18,7 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
     setClassVideoDetails,
     addClassVideoSteps,
     removeClassVideoSteps,
-    updateClassVideo,
+    updateClassVideoById,
     resetSelectedClassVideo,
   } = useEditClassVideoStore();
 
@@ -31,6 +31,8 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
   const [isEditClassVideoOpen, setIsEditClassVideoOpen] = useState(false);
   const [isEditDemoVideoOpen, setIsEditDemoVideoOpen] = useState(false);
   const [isEditAnimationOpen, setIsEditAnimationOpen] = useState(false);
+
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setInitialClassVideo({
@@ -72,20 +74,29 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setIsUpdating(true);
+
     const { title, videoThumbnail, image, videoId } = updatedClassVideoDetails;
 
     if (!title || !videoId || (!image && !videoThumbnail)) {
       toast("Please add title, image and video");
+      setIsUpdating(false);
+
       return;
     }
 
     try {
-      const res = await updateClassVideo();
+      const res = await updateClassVideoById();
       console.log(res);
+      toast.success("Class video updated successfully");
+
       onCancel(); // close edit section
       getCourseById(courseId);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update Class video");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -358,13 +369,19 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
               onCancel();
               resetSelectedClassVideo(); // reset id in store
             }}
-            className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl"
+            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+              isUpdating ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={isUpdating}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl"
+            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+              isUpdating ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={isUpdating}
           >
             Update
           </button>

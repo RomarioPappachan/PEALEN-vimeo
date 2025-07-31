@@ -224,6 +224,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
               className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
                 isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
               }`}
+              disabled={isSubmitting}
             >
               Cancel
             </button>

@@ -27,7 +27,7 @@ function EditCourseCertificate({ onEdit }) {
       id: certificateDetails?.id || null,
       fileName: certificateDetails?.fileName || "",
       certificateSize: certificateDetails?.certificateSize || "",
-      downloadable: certificateDetails?.downloadable || true,
+      downloadable: certificateDetails?.downloadable,
       watermark: certificateDetails?.watermark || "",
       fileUrl: certificateDetails?.fileUrl || null,
       image: null, //for new upload
@@ -95,6 +95,7 @@ function EditCourseCertificate({ onEdit }) {
       );
     else await addCourseCertificate(courseDetails?.id, certificateFormData);
 
+    onEdit(false);
     getCourseById(courseId);
 
     toast.success("Course certicate updated successfully.");

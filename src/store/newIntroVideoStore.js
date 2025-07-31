@@ -5,8 +5,8 @@ export const useNewIntroVideoStore = create((set, get) => ({
   newIntroVideoDetails: {
     videoType: "intro",
     title: "",
-    videoUrl: "https://vimeo.com/manage/videos/1104073672",
-    videoId: "1104073672",
+    videoUrl: "",
+    videoId: "",
     image: null,
     pdf: null,
   },
@@ -17,6 +17,18 @@ export const useNewIntroVideoStore = create((set, get) => ({
         newIntroVideoDetails: {
           ...state.newIntroVideoDetails,
           [name]: value,
+        },
+      };
+    });
+  },
+
+  setNewIntroVideoId: (newVideoId) => {
+    set((state) => {
+      return {
+        newIntroVideoDetails: {
+          ...state.newIntroVideoDetails,
+          videoId: newVideoId,
+          videoUrl: newVideoId,
         },
       };
     });

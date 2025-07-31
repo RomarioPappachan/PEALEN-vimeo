@@ -8,6 +8,7 @@ import ModuleMaterial from "./ModuleMaterial";
 import { LiaTrashAlt } from "react-icons/lia";
 import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
 import toast from "react-hot-toast";
+import UploadToVimeo from "./UploadToVimeo";
 
 export default function NewIntroVideoForm({ index, onCancel }) {
   const { courseId } = useParams();
@@ -15,6 +16,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
   const {
     newIntroVideoDetails,
     setNewIntroVideoDetails,
+    setNewIntroVideoId,
     addNewIntroVideo,
     resetNewIntroVideo,
   } = useNewIntroVideoStore();
@@ -120,7 +122,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                   <button
                     className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                     type="button"
-                    // onClick={() => setIsAddIntroVideoOpen(true)}
+                    onClick={() => setIsAddIntroVideoOpen(true)}
                   >
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
                       Intro Video
@@ -149,7 +151,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
                 <button
                   type="button"
                   className="h-10 p-4 text-sm rounded-xl bg-[#72c347] text-[var(--background-primary)] cursor-pointer flex justify-center items-center"
-                  //   onClick={() => setIsAddIntroVideoOpen(true)}
+                  onClick={() => setIsAddIntroVideoOpen(true)}
                 >
                   {newIntroVideoDetails?.videoId
                     ? "Change Video"
@@ -203,6 +205,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
               className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
                 isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
               }`}
+              disabled={isSubmitting}
             >
               Cancel
             </button>
@@ -223,6 +226,14 @@ export default function NewIntroVideoForm({ index, onCancel }) {
           video={newIntroVideoDetails}
           onFileChange={setNewIntroVideoDetails}
           onClose={() => setIsAddIntroMaterialOpen(false)}
+        />
+      )}
+
+      {isAddIntroVideoOpen && (
+        <UploadToVimeo
+          videoTitle={newIntroVideoDetails.title}
+          onSetVideoId={setNewIntroVideoId}
+          onClose={() => setIsAddIntroVideoOpen(false)}
         />
       )}
     </div>

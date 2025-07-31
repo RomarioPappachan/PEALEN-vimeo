@@ -14,7 +14,7 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
     updatedIntroVideoDetails,
     setInitialIntroVideo,
     setIntroVideoDetails,
-    updateIntroVideo,
+    updateIntroVideoById,
     resetSelectedIntroVideo,
   } = useEditIntroVideoStore();
 
@@ -22,6 +22,7 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
 
   const [isEditIntroMaterialOpen, setIsEditIntroMaterialOpen] = useState(false);
   const [isEditIntroVideoOpen, setIsEditIntroVideoOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setInitialIntroVideo({
@@ -53,20 +54,27 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setIsUpdating(true);
+
     const { title, videoThumbnail, image, videoId } = updatedIntroVideoDetails;
 
     if (!title || !videoId || (!image && !videoThumbnail)) {
       toast("Please add title, image and video");
+      setIsUpdating(false);
       return;
     }
 
     try {
-      const res = await updateIntroVideo();
+      const res = await updateIntroVideoById();
       console.log(res);
+      toast.success("Intro video updated successfully");
       onCancel(); // close edit section
       getCourseById(courseId);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update Intro video");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -180,13 +188,19 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
               onCancel();
               resetSelectedIntroVideo(); // reset id in store
             }}
-            className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl"
+            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+              isUpdating ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={isUpdating}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl"
+            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+              isUpdating ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={isUpdating}
           >
             Update
           </button>
