@@ -8,6 +8,7 @@ import ModuleMaterial from "./ModuleMaterial";
 import { LiaTrashAlt } from "react-icons/lia";
 import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
 import toast from "react-hot-toast";
+import UploadToVimeo from "./UploadToVimeo";
 
 export default function NewConclusionVideoForm({ index, onCancel }) {
   const { courseId } = useParams();
@@ -15,6 +16,8 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
   const {
     newConclusionVideoDetails,
     setNewConclusionVideoDetails,
+    setVideoIdInStore,
+    deleteVideoIdFromStore,
     addNewConclusionVideo,
     resetNewConclusionVideo,
   } = useNewConclusionVideoStore();
@@ -122,7 +125,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
                   <button
                     className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                     type="button"
-                    // onClick={() => setIsAddConclusionVideoOpen(true)}
+                    onClick={() => setIsAddConclusionVideoOpen(true)}
                   >
                     <span className="text-sm text-[var(--border-secondary)] font-semibold">
                       Conclusion Video
@@ -151,7 +154,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
                 <button
                   type="button"
                   className="h-10 p-4 text-sm rounded-xl bg-[#72c347] text-[var(--background-primary)] cursor-pointer flex justify-center items-center"
-                  //   onClick={() => setIsAddConclusionVideoOpen(true)}
+                  onClick={() => setIsAddConclusionVideoOpen(true)}
                 >
                   {newConclusionVideoDetails?.videoId
                     ? "Change Video"
@@ -245,6 +248,19 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
           video={newConclusionVideoDetails}
           onFileChange={setNewConclusionVideoDetails}
           onClose={() => setIsAddConclusionMaterialOpen(false)}
+        />
+      )}
+
+      {isAddConclusionVideoOpen && (
+        <UploadToVimeo
+          key={`uploadConcVideo${index + 1}`}
+          videoId={newConclusionVideoDetails.videoId}
+          videoTitle={newConclusionVideoDetails.title}
+          videoType="conclusion"
+          userAction="create"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsAddIntroVideoOpen(false)}
         />
       )}
     </div>

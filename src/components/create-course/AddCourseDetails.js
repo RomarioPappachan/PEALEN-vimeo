@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAddCourseDetailsStore } from "@/store/addCourseDetailsStore";
 import { useFacultyStore } from "@/store/facultyStore";
 import { fetchCategories } from "@/api/course";
@@ -34,6 +35,8 @@ export default function AddCourseDetails({ onNext }) {
   const [previewImgUrl, setPreviewImgUrl] = useState("");
   const [newCoursePoint, setNewCoursePoint] = useState("");
   const [facultyQuery, setFacultyQuery] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsCategoryLoaded(false);
@@ -134,10 +137,13 @@ export default function AddCourseDetails({ onNext }) {
 
       //create course
       const res = await addCourse(formData);
-      console.log(res);
+
+      const newCourseId = res?.course?.id;
+      router.push(`/dashboard/courses/${newCourseId}`);
+
       toast.success("Course created successfully");
 
-      onNext();
+      // onNext();
     } catch (error) {
       console.log(error);
       toast.error("Error creating course");
@@ -200,11 +206,13 @@ export default function AddCourseDetails({ onNext }) {
       toast.error("Please enter all course details");
       return;
     }
-    if (!isCreated) {
-      handleCreateCourse();
-    } else {
-      handleEditCourse();
-    }
+    // if (!isCreated) {
+    //   handleCreateCourse();
+    // } else {
+    //   handleEditCourse();
+    // }
+
+    handleCreateCourse();
   };
 
   if (!isCategoryLoaded)

@@ -58,6 +58,30 @@ export const useEditConclusionVideoStore = create((set, get) => ({
     });
   },
 
+  setVideoIdInStore: (newVideoId, type) => {
+    set((state) => {
+      return {
+        updatedConclusionVideoDetails: {
+          ...state.updatedConclusionVideoDetails,
+          videoId: newVideoId,
+          videoUrl: newVideoId,
+        },
+      };
+    });
+  },
+
+  deleteVideoIdFromStore: (videoType) => {
+    set((state) => {
+      return {
+        updatedConclusionVideoDetails: {
+          ...state.updatedConclusionVideoDetails,
+          videoId: "",
+          videoUrl: "",
+        },
+      };
+    });
+  },
+
   updateConclusionVideoById: async () => {
     try {
       const { selectedConclusionVideoId, updatedConclusionVideoDetails } =

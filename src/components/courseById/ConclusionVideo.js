@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { useEditConclusionVideoStore } from "@/store/editConclusionVideoStore";
-import { LiaTrashAlt } from "react-icons/lia";
-import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
 import EditConclusionVideo from "./EditConclusionVideo";
 import ConclusionVideoDetail from "./ConclusionVideoDetail";
 import DeleteConfirmation from "./DeleteConfirmation";
+
+import { LuMinus, LuPen, LuPlus, LuTrash2 } from "react-icons/lu";
 
 export default function ConclusionVideo({ id, videoIndex, video }) {
   const { selectedConclusionVideoId, setConclusionVideoId } =
@@ -23,16 +23,6 @@ export default function ConclusionVideo({ id, videoIndex, video }) {
             {videoIndex + 1} <span className="ms-4">{video?.title}</span>
           </h3>
           <div className="flex items-center gap-4">
-            {/* <button
-            type="button"
-            className="flex justify-center items-center cursor-pointer"
-            onClick={() => setIsDeleteConclusionVideoOpen(true)}
-            title="Delete"
-
-          >
-            <LiaTrashAlt className="text-2xl text-[#BEBEBE] font-bold hover:text-red-400" />
-          </button> */}
-
             <button
               type="button"
               onClick={() => setIsExpanded((prev) => !prev)}
@@ -74,15 +64,17 @@ export default function ConclusionVideo({ id, videoIndex, video }) {
                     setConclusionVideoId(id);
                     setIsEdit(true);
                   }}
-                  className="px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl cursor-pointer"
+                  className="px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl hover:bg-[#62B337] cursor-pointer"
                 >
-                  Edit
+                  <LuPen className="text-base" />
+                  <span>Edit</span>
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-xl cursor-pointer"
+                  className="px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-red-500 rounded-xl hover:bg-red-600 cursor-pointer"
                 >
-                  Delete
+                  <LuTrash2 className="text-base" />
+                  <span>Delete</span>
                 </button>
               </div>
             </>

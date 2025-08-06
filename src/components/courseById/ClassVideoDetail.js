@@ -113,7 +113,7 @@ export default function ClassVideoDetail({ videoIndex, video }) {
               </div>
               <div>
                 <div className="w-44 h-28 rounded-2xl bg-[var(--border-primary)] flex justify-center items-center">
-                  <div className="text-sm text-[var(--text-secondary)] font-semibold cursor-pointer">
+                  <div className="text-sm text-[var(--text-secondary)] font-semibold">
                     {video?.videoThumbnail ? (
                       <div className="w-full h-28 rounded-2xl border border-[var(--border-primary)] overflow-hidden flex justify-center items-center">
                         <img

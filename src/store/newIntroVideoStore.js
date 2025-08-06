@@ -22,13 +22,25 @@ export const useNewIntroVideoStore = create((set, get) => ({
     });
   },
 
-  setNewIntroVideoId: (newVideoId) => {
+  setNewIntroVideoId: (newVideoId, type) => {
     set((state) => {
       return {
         newIntroVideoDetails: {
           ...state.newIntroVideoDetails,
           videoId: newVideoId,
           videoUrl: newVideoId,
+        },
+      };
+    });
+  },
+
+  deleteNewIntroVideoId: (videoType) => {
+    set((state) => {
+      return {
+        newIntroVideoDetails: {
+          ...state.newIntroVideoDetails,
+          videoId: "",
+          videoUrl: "",
         },
       };
     });

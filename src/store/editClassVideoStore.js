@@ -106,6 +106,66 @@ export const useEditClassVideoStore = create((set, get) => ({
     });
   },
 
+  setVideoIdInStore: (newVideoId, type) => {
+    set((state) => {
+      if (type === "class") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            videoId: newVideoId,
+            videoUrl: newVideoId,
+          },
+        };
+      } else if (type === "demo") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            demoVideoId: newVideoId,
+            demoVideourl: newVideoId,
+          },
+        };
+      } else if (type === "animation") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            animationVideoId: newVideoId,
+            animationUrl: newVideoId,
+          },
+        };
+      }
+    });
+  },
+
+  deleteVideoIdFromStore: (type) => {
+    set((state) => {
+      if (type === "class") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            videoId: "",
+            videoUrl: "",
+          },
+        };
+      } else if (type === "demo") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            demoVideoId: "",
+            demoVideourl: "",
+          },
+        };
+      } else if (type === "animation") {
+        return {
+          updatedClassVideoDetails: {
+            ...state.updatedClassVideoDetails,
+            animationVideoId: "",
+            animationUrl: "",
+          },
+        };
+      }
+    });
+  },
+
   updateClassVideoById: async () => {
     try {
       const { selectedClassVideoId, updatedClassVideoDetails } = get();

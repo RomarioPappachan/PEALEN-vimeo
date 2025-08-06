@@ -8,7 +8,8 @@ import VideoTranscript from "./VideoTranscript";
 import VideoSteps from "./VideoSteps";
 
 import toast from "react-hot-toast";
-import { LuCircleCheckBig } from "react-icons/lu";
+import { LuCircleCheckBig, LuCircleX, LuSave } from "react-icons/lu";
+import UploadToVimeo from "./UploadToVimeo";
 
 export default function EditClassVideo({ videoIndex, video, onCancel }) {
   const { courseId } = useParams();
@@ -18,6 +19,8 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
     setClassVideoDetails,
     addClassVideoSteps,
     removeClassVideoSteps,
+    setVideoIdInStore,
+    deleteVideoIdFromStore,
     updateClassVideoById,
     resetSelectedClassVideo,
   } = useEditClassVideoStore();
@@ -266,7 +269,7 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
                       ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                       : "border-[#B3B8B8] bg-[#F1F1F1]"
                   }`}
-                  //   onClick={() => setIsEditClassVideoOpen(true)}
+                  onClick={() => setIsEditClassVideoOpen(true)}
                 >
                   <span className="text-xs text-center">
                     {updatedClassVideoDetails?.videoUrl ? "Video ✅" : ""}
@@ -280,7 +283,7 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
                       ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                       : "border-[#B3B8B8] bg-[#F1F1F1]"
                   }`}
-                  //   onClick={() => setIsEditDemoVideoOpen(true)}
+                  onClick={() => setIsEditDemoVideoOpen(true)}
                 >
                   <span className="text-xs text-center">
                     {updatedClassVideoDetails?.demoVideourl
@@ -314,7 +317,7 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
                       ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                       : "border-[#B3B8B8] bg-[#F1F1F1]"
                   }`}
-                  //   onClick={() => setIsEditAnimationOpen(true)}
+                  onClick={() => setIsEditAnimationOpen(true)}
                 >
                   <span className="text-xs text-center">
                     {updatedClassVideoDetails?.animationUrl
@@ -369,21 +372,23 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
               onCancel();
               resetSelectedClassVideo(); // reset id in store
             }}
-            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-gray-400 rounded-xl hover:bg-gray-500 ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Cancel
+            <LuCircleX className="text-base" />
+            <span>Cancel</span>
           </button>
           <button
             type="submit"
-            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl hover:bg-[#62B337] ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Update
+            <LuSave className="text-base" />
+            <span>Update</span>
           </button>
         </div>
       </form>
@@ -410,6 +415,48 @@ export default function EditClassVideo({ videoIndex, video, onCancel }) {
           onAddStep={addClassVideoSteps}
           onRemoveStep={removeClassVideoSteps}
           onClose={() => setIsEditStepsOpen(false)}
+        />
+      )}
+
+      {/* Class Video  */}
+      {isEditClassVideoOpen && (
+        <UploadToVimeo
+          key={`editClassVideo${videoIndex}`}
+          videoId={updatedClassVideoDetails.videoId}
+          videoTitle={updatedClassVideoDetails.title}
+          videoType="class"
+          userAction="edit"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsEditClassVideoOpen(false)}
+        />
+      )}
+
+      {/* Demo Video  */}
+      {isEditDemoVideoOpen && (
+        <UploadToVimeo
+          key={`editDemoVideo${videoIndex}`}
+          videoId={updatedClassVideoDetails.demoVideoId}
+          videoTitle={`${updatedClassVideoDetails.title} (Demo)`}
+          videoType="demo"
+          userAction="edit"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsEditDemoVideoOpen(false)}
+        />
+      )}
+
+      {/* Animation Video  */}
+      {isEditAnimationOpen && (
+        <UploadToVimeo
+          key={`editAnimationVideo${videoIndex}`}
+          videoId={updatedClassVideoDetails.animationVideoId}
+          videoTitle={`${updatedClassVideoDetails.title} (Animation)`}
+          videoType="animation"
+          userAction="edit"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsEditAnimationOpen(false)}
         />
       )}
     </>

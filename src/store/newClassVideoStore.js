@@ -60,6 +60,66 @@ export const useNewClassVideoStore = create((set, get) => ({
     });
   },
 
+  setVideoIdInStore: (newVideoId, type) => {
+    set((state) => {
+      if (type === "class") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            videoId: newVideoId,
+            videoUrl: newVideoId,
+          },
+        };
+      } else if (type === "demo") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            demoVideoId: newVideoId,
+            demoVideourl: newVideoId,
+          },
+        };
+      } else if (type === "animation") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            animationVideoId: newVideoId,
+            animationUrl: newVideoId,
+          },
+        };
+      }
+    });
+  },
+
+  deleteVideoIdFromStore: (type) => {
+    set((state) => {
+      if (type === "class") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            videoId: "",
+            videoUrl: "",
+          },
+        };
+      } else if (type === "demo") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            demoVideoId: "",
+            demoVideourl: "",
+          },
+        };
+      } else if (type === "animation") {
+        return {
+          newClassVideoDetails: {
+            ...state.newClassVideoDetails,
+            animationVideoId: "",
+            animationUrl: "",
+          },
+        };
+      }
+    });
+  },
+
   addNewClassVideo: async (courseId) => {
     try {
       const { newClassVideoDetails } = get();

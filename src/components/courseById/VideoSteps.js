@@ -1,8 +1,113 @@
+// "use client";
+
+// import React, { useState } from "react";
+// import { createPortal } from "react-dom";
+
+// import { LuX } from "react-icons/lu";
+
+// export default function VideoSteps({
+//   video,
+//   onClose,
+//   onAddStep,
+//   onRemoveStep,
+// }) {
+//   const [newVideoStep, setNewVideoStep] = useState("");
+
+//   const handleAddStep = (e) => {
+//     if (e.key === "Enter" && !e.shiftKey) {
+//       e.preventDefault();
+//       const trimmed = newVideoStep.trim();
+//       if (trimmed !== "") {
+//         onAddStep(trimmed);
+//         setNewVideoStep("");
+//       }
+//     }
+//   };
+
+//   const handleDeleteStep = (indexToDelete) => {
+//     onRemoveStep(indexToDelete);
+//   };
+
+//   return createPortal(
+//     <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-center px-2 py-6">
+//       <div className="relative w-full max-w-4xl max-h-[90vh] bg-[var(--background-primary)] rounded-2xl overflow-hidden flex flex-col">
+//         {/* Close Button */}
+//         <button
+//           type="button"
+//           onClick={onClose}
+//           className="absolute top-3 right-3 size-9 rounded-lg bg-[#DF5050] text-white flex justify-center items-center z-10 cursor-pointer"
+//         >
+//           <LuX className="text-xl" />
+//         </button>
+
+//         {/* Header */}
+//         <div className="pt-6 px-6 pb-3">
+//           <h2 className="text-center text-xl md:text-2xl font-semibold text-[var(--text-secondary)]">
+//             Add Video Steps
+//           </h2>
+//         </div>
+
+//         {/* Scrollable Content */}
+//         <div className="overflow-y-auto mx-14 pb-24 flex-1">
+//           <label
+//             htmlFor={`videoSteps`}
+//             className="block text-base text-[var(--text-secondary)] font-semibold mb-2"
+//           >
+//             Video Steps
+//           </label>
+//           <div className="w-full min-h-32 p-3.5 rounded-2xl border border-[var(--border-primary)] focus-within:border-[var(--border-secondary)]">
+//             {video?.videoSteps.length > 0 && (
+//               <ul className="list-disc pl-5 space-y-2 text-[var(--text-secondary)]">
+//                 {video?.videoSteps.map((step, index) => (
+//                   <li key={index} className="relative pr-6">
+//                     <span>{step}</span>
+//                     <button
+//                       onClick={(e) => {
+//                         e.preventDefault();
+//                         handleDeleteStep(index);
+//                       }}
+//                       className="absolute right-0 top-0 size-6 bg-[var(--text-secondary)] text-white hover:bg-red-400 rounded-full flex justify-center items-center cursor-pointer"
+//                       title="Delete"
+//                       type="button"
+//                     >
+//                       <LuX size={16} />
+//                     </button>
+//                   </li>
+//                 ))}
+//               </ul>
+//             )}
+//             <textarea
+//               id={`videoSteps`}
+//               name="videoSteps"
+//               value={newVideoStep}
+//               onChange={(e) => setNewVideoStep(e.target.value)}
+//               onKeyDown={handleAddStep}
+//               className="w-full mt-2 outline-none text-[var(--text-secondary)] placeholder:text-[var(--text-placeholder)] placeholder:italic resize-none"
+//               placeholder="Type here and press Enter"
+//               rows={6}
+//             />
+//           </div>
+//         </div>
+
+//         {/* Sticky Footer Button */}
+//         <div className="absolute bottom-0 left-0 w-full bg-[var(--background-primary)] px-14 py-4 flex items-center justify-end">
+//           <button
+//             type="button"
+//             className="px-6 py-3 bg-[#72C347] hover:bg-[#72c347e2] text-white text-xl rounded-2xl font-semibold"
+//           >
+//             Add Steps
+//           </button>
+//         </div>
+//       </div>
+//     </div>,
+//     document.body
+//   );
+// }
+
 "use client";
 
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-
 import { LuX } from "react-icons/lu";
 
 export default function VideoSteps({
@@ -29,74 +134,72 @@ export default function VideoSteps({
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-center px-2 py-6">
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[var(--background-primary)] rounded-2xl overflow-hidden flex flex-col">
-        {/* Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-3 right-3 size-9 rounded-lg bg-[#DF5050] text-white flex justify-center items-center z-10 cursor-pointer"
-        >
-          <LuX className="text-xl" />
-        </button>
-
+    <div className="fixed inset-0 z-50 flex justify-center items-start sm:items-center overflow-auto px-4 py-6 bg-black/40 animate-fadeIn">
+      <div className="relative w-full max-w-3xl max-h-[90vh] rounded-3xl shadow-2xl border bg-white p-0 overflow-hidden animate-popIn flex flex-col border-[var(--border-secondary)]">
         {/* Header */}
-        <div className="pt-6 px-6 pb-3">
-          <h2 className="text-center text-xl md:text-2xl font-semibold text-[var(--text-secondary)]">
+        <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b bg-white border-b-[var(--border-secondary)]">
+          <h2 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] truncate">
             Add Video Steps
           </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-4 px-3 py-2 rounded-full font-semibold shadow-lg transition disabled:opacity-60 cursor-pointer bg-[var(--border-secondary)] text-white"
+            aria-label="Close video steps"
+          >
+            {/* <LuX className="text-lg sm:text-xl" /> */}
+            Close
+          </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="overflow-y-auto mx-14 pb-24 flex-1">
+        {/* Content: flex column with scrollable list and fixed textarea */}
+        <div className="flex flex-col px-6 sm:px-8 pt-6 pb-6 flex-1 min-h-0">
           <label
-            htmlFor={`videoSteps`}
-            className="block text-base text-[var(--text-secondary)] font-semibold mb-2"
+            htmlFor="videoSteps"
+            className="block text-base font-semibold mb-2 text-[var(--text-secondary)]"
           >
             Video Steps
           </label>
-          <div className="w-full min-h-32 p-3.5 rounded-2xl border border-[var(--border-primary)] focus-within:border-[var(--border-secondary)]">
-            {video?.videoSteps.length > 0 && (
+
+          {/* Scrollable Steps List */}
+          <div className="flex-1 overflow-y-auto mb-4 rounded-2xl border border-[var(--border-primary)] focus-within:border-[var(--border-secondary)] relative p-3.5 min-h-0">
+            {video?.videoSteps.length > 0 ? (
               <ul className="list-disc pl-5 space-y-2 text-[var(--text-secondary)]">
-                {video?.videoSteps.map((step, index) => (
-                  <li key={index} className="relative pr-6">
+                {video.videoSteps.map((step, index) => (
+                  <li key={index} className="relative pr-6 break-words">
                     <span>{step}</span>
                     <button
                       onClick={(e) => {
                         e.preventDefault();
                         handleDeleteStep(index);
                       }}
-                      className="absolute right-0 top-0 size-6 bg-[var(--text-secondary)] text-white hover:bg-red-400 rounded-full flex justify-center items-center cursor-pointer"
+                      className="absolute right-0 top-0 w-6 h-6 bg-[var(--text-secondary)] text-white hover:bg-red-400 rounded-full flex justify-center items-center cursor-pointer"
                       title="Delete"
                       type="button"
                     >
-                      <LuX size={16} />
+                      <LuX size={14} />
                     </button>
                   </li>
                 ))}
               </ul>
+            ) : (
+              <p className="text-[var(--text-secondary)] italic">
+                No video steps added
+              </p>
             )}
-            <textarea
-              id={`videoSteps`}
-              name="videoSteps"
-              value={newVideoStep}
-              onChange={(e) => setNewVideoStep(e.target.value)}
-              onKeyDown={handleAddStep}
-              className="w-full mt-2 outline-none text-[var(--text-secondary)] placeholder:text-[var(--text-placeholder)] placeholder:italic resize-none"
-              placeholder="Type here and press Enter"
-              rows={6}
-            />
           </div>
-        </div>
 
-        {/* Sticky Footer Button */}
-        <div className="absolute bottom-0 left-0 w-full bg-[var(--background-primary)] px-14 py-4 flex items-center justify-end">
-          <button
-            type="button"
-            className="px-6 py-3 bg-[#72C347] hover:bg-[#72c347e2] text-white text-xl rounded-2xl font-semibold"
-          >
-            Add Steps
-          </button>
+          {/* Always visible textarea */}
+          <textarea
+            id="videoSteps"
+            name="videoSteps"
+            value={newVideoStep}
+            onChange={(e) => setNewVideoStep(e.target.value)}
+            onKeyDown={handleAddStep}
+            placeholder="Type here and press Enter"
+            rows={4}
+            className="w-full resize-none rounded-md p-2 outline-none text-[var(--text-secondary)] placeholder:text-[var(--text-placeholder)] placeholder:italic border border-[var(--border-primary)] focus:border-[var(--border-secondary)] transition"
+          />
         </div>
       </div>
     </div>,

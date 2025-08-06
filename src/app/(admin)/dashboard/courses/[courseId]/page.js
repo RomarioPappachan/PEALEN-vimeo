@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCourseDetailStore } from "@/store/courseDetailStore";
+
 import Certificate from "@/components/courseById/Certificate";
 import CourseDetail from "@/components/courseById/CourseDetail";
 import CourseVideos from "@/components/courseById/CourseVideos";
+import TestsAndChallenges from "@/components/courseById/TestsAndChallenges";
 
 import { LuChevronLeft } from "react-icons/lu";
 
@@ -21,7 +23,7 @@ function CourseById() {
   }, [courseId]);
 
   const nextStep = () => {
-    if (step < 1 || step >= 3) return;
+    if (step < 1 || step >= 4) return;
 
     setStep((prevVal) => prevVal + 1);
   };
@@ -58,7 +60,10 @@ function CourseById() {
       <div>
         {step === 1 && <CourseDetail onNext={nextStep} />}
         {step === 2 && <CourseVideos onNext={nextStep} onPrevious={prevStep} />}
-        {step === 3 && <Certificate onPrevious={prevStep} />}
+        {step === 3 && (
+          <TestsAndChallenges onNext={nextStep} onPrevious={prevStep} />
+        )}
+        {step === 4 && <Certificate onPrevious={prevStep} />}
       </div>
     </div>
   );

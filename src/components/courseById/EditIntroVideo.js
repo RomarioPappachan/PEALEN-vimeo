@@ -4,9 +4,10 @@ import { useParams } from "next/navigation";
 import { useEditIntroVideoStore } from "@/store/editIntroVideoStore";
 import { useCourseDetailStore } from "@/store/courseDetailStore";
 import ModuleMaterial from "./ModuleMaterial";
+import UploadToVimeo from "./UploadToVimeo";
 
+import { LuCircleCheckBig, LuCircleX, LuSave } from "react-icons/lu";
 import toast from "react-hot-toast";
-import { LuCircleCheckBig } from "react-icons/lu";
 
 export default function EditIntroVideo({ videoIndex, video, onCancel }) {
   const { courseId } = useParams();
@@ -14,6 +15,8 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
     updatedIntroVideoDetails,
     setInitialIntroVideo,
     setIntroVideoDetails,
+    setIntroVideoIdInStore,
+    deleteIntroVideoIdFromStore,
     updateIntroVideoById,
     resetSelectedIntroVideo,
   } = useEditIntroVideoStore();
@@ -102,7 +105,7 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
                 <button
                   className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                   type="button"
-                  // onClick={() => setIsEditIntroVideoOpen(true)}
+                  onClick={() => setIsEditIntroVideoOpen(true)}
                 >
                   <span className="text-sm text-[var(--border-secondary)] font-semibold">
                     Intro Video
@@ -132,7 +135,7 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
               <button
                 type="button"
                 className="h-10 p-4 text-sm rounded-xl bg-[#72c347] text-[var(--background-primary)] cursor-pointer flex justify-center items-center"
-                //   onClick={() => setIsAddIntroVideoOpen(true)}
+                onClick={() => setIsEditIntroVideoOpen(true)}
               >
                 {updatedIntroVideoDetails?.videoId
                   ? "Change Video"
@@ -188,21 +191,23 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
               onCancel();
               resetSelectedIntroVideo(); // reset id in store
             }}
-            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-gray-400 rounded-xl hover:bg-gray-500 ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Cancel
+            <LuCircleX className="text-base" />
+            <span>Cancel</span>
           </button>
           <button
             type="submit"
-            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl hover:bg-[#62B337] ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Update
+            <LuSave className="text-base" />
+            <span>Update</span>
           </button>
         </div>
       </form>
@@ -212,6 +217,19 @@ export default function EditIntroVideo({ videoIndex, video, onCancel }) {
           video={updatedIntroVideoDetails}
           onFileChange={setIntroVideoDetails}
           onClose={() => setIsEditIntroMaterialOpen(false)}
+        />
+      )}
+
+      {isEditIntroVideoOpen && (
+        <UploadToVimeo
+          key={`edit${updatedIntroVideoDetails.id}`}
+          userAction="edit"
+          videoTitle={updatedIntroVideoDetails.title}
+          videoType="intro"
+          videoId={updatedIntroVideoDetails.videoId}
+          onSetVideoId={setIntroVideoIdInStore}
+          onDeleteVideoId={deleteIntroVideoIdFromStore}
+          onClose={() => setIsEditIntroVideoOpen(false)}
         />
       )}
     </>

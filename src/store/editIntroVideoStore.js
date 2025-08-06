@@ -58,6 +58,30 @@ export const useEditIntroVideoStore = create((set, get) => ({
     });
   },
 
+  setIntroVideoIdInStore: (newVideoId, type) => {
+    set((state) => {
+      return {
+        updatedIntroVideoDetails: {
+          ...state.updatedIntroVideoDetails,
+          videoId: newVideoId,
+          videoUrl: newVideoId,
+        },
+      };
+    });
+  },
+
+  deleteIntroVideoIdFromStore: (videoType) => {
+    set((state) => {
+      return {
+        updatedIntroVideoDetails: {
+          ...state.updatedIntroVideoDetails,
+          videoId: "",
+          videoUrl: "",
+        },
+      };
+    });
+  },
+
   updateIntroVideoById: async () => {
     try {
       const { selectedIntroVideoId, updatedIntroVideoDetails } = get();

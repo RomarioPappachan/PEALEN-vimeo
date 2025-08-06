@@ -13,7 +13,7 @@ export default function IntroVideoDetail({ videoIndex, video }) {
       <div className="flex gap-4">
         <div className="w-4/5">
           <div className="space-y-6">
-            <div className="w-full h-10 px-3.5 py-2 text-sm text-[var(--text-secondary)] border border-[var(--border-primary)] rounded-xl outline-none placeholder:text-[var(--text-placeholder)] placeholder:italic focus:border-[var(--border-secondary)]">
+            <div className="w-full h-10 px-3.5 py-2 text-sm text-[var(--text-secondary)] border border-[var(--border-primary)] rounded-xl outline-none ">
               {video?.title}
             </div>
 
@@ -49,7 +49,7 @@ export default function IntroVideoDetail({ videoIndex, video }) {
 
         <div className="w-1/5">
           <div>
-            <div className="text-base text-[var(--text-secondary)] font-semibold cursor-pointer">
+            <div className="text-base text-[var(--text-secondary)] font-semibold">
               {video?.videoThumbnail ? (
                 <div className="w-full h-32 rounded-2xl border border-[var(--border-primary)] overflow-hidden flex justify-center items-center">
                   <img

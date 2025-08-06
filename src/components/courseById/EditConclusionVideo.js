@@ -6,7 +6,8 @@ import { useCourseDetailStore } from "@/store/courseDetailStore";
 import ModuleMaterial from "./ModuleMaterial";
 
 import toast from "react-hot-toast";
-import { LuCircleCheckBig } from "react-icons/lu";
+import { LuCircleCheckBig, LuCircleX, LuSave } from "react-icons/lu";
+import UploadToVimeo from "./UploadToVimeo";
 
 export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
   const { courseId } = useParams();
@@ -14,6 +15,8 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
     updatedConclusionVideoDetails,
     setInitialConclusionVideo,
     setConclusionVideoDetails,
+    setVideoIdInStore,
+    deleteVideoIdFromStore,
     updateConclusionVideoById,
     resetSelectedConclusionVideo,
   } = useEditConclusionVideoStore();
@@ -108,7 +111,7 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
                 <button
                   className="w-full h-10 p-3 border border-[var(--border-secondary)] rounded-xl outline-none flex justify-center items-center gap-x-2 cursor-pointer"
                   type="button"
-                  // onClick={() => setIsEditConclusionVideoOpen(true)}
+                  onClick={() => setIsEditConclusionVideoOpen(true)}
                 >
                   <span className="text-sm text-[var(--border-secondary)] font-semibold">
                     Conclusion Video
@@ -138,7 +141,7 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
               <button
                 type="button"
                 className="h-10 p-4 text-sm rounded-xl bg-[#72c347] text-[var(--background-primary)] cursor-pointer flex justify-center items-center"
-                //   onClick={() => setIsAddConclusionVideoOpen(true)}
+                onClick={() => setIsEditConclusionVideoOpen(true)}
               >
                 {updatedConclusionVideoDetails?.videoId
                   ? "Change Video"
@@ -196,21 +199,23 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
               onCancel();
               resetSelectedConclusionVideo(); // reset id in store
             }}
-            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-gray-400 rounded-xl hover:bg-gray-500 ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Cancel
+            <LuCircleX className="text-base" />
+            <span>Cancel</span>
           </button>
           <button
             type="submit"
-            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
+            className={`px-4 py-2 flex justify-center items-center gap-x-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl hover:bg-[#62B337] ${
               isUpdating ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isUpdating}
           >
-            Update
+            <LuSave className="text-base" />
+            <span>Update</span>
           </button>
         </div>
       </form>
@@ -220,6 +225,19 @@ export default function EditConclusionVideo({ videoIndex, video, onCancel }) {
           video={updatedConclusionVideoDetails}
           onFileChange={setConclusionVideoDetails}
           onClose={() => setIsEditConclusionMaterialOpen(false)}
+        />
+      )}
+
+      {isEditConclusionVideoOpen && (
+        <UploadToVimeo
+          key={`editConcVideo${videoIndex}`}
+          videoId={updatedConclusionVideoDetails.videoId}
+          videoTitle={updatedConclusionVideoDetails.title}
+          videoType="conclusion"
+          userAction="edit"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsEditConclusionVideoOpen(false)}
         />
       )}
     </>

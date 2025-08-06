@@ -10,6 +10,7 @@ import { LuCircleCheckBig, LuMinus, LuPlus } from "react-icons/lu";
 import toast from "react-hot-toast";
 import VideoTranscript from "./VideoTranscript";
 import VideoSteps from "./VideoSteps";
+import UploadToVimeo from "./UploadToVimeo";
 
 export default function NewClassVideoForm({ index, onCancel }) {
   const { courseId } = useParams();
@@ -19,6 +20,8 @@ export default function NewClassVideoForm({ index, onCancel }) {
     setNewClassVideoDetails,
     addClassVideoSteps,
     removeClassVideoSteps,
+    setVideoIdInStore,
+    deleteVideoIdFromStore,
     addNewClassVideo,
     resetNewClassVideo,
   } = useNewClassVideoStore();
@@ -282,7 +285,7 @@ export default function NewClassVideoForm({ index, onCancel }) {
                         ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                         : "border-[#B3B8B8] bg-[#F1F1F1]"
                     }`}
-                    //   onClick={() => setIsAddClassVideoOpen(true)}
+                    onClick={() => setIsAddClassVideoOpen(true)}
                   >
                     <span className="text-xs text-center">
                       {newClassVideoDetails.videoUrl ? "Video ✅" : ""}
@@ -296,7 +299,7 @@ export default function NewClassVideoForm({ index, onCancel }) {
                         ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                         : "border-[#B3B8B8] bg-[#F1F1F1]"
                     }`}
-                    //   onClick={() => setIsAddDemoVideoOpen(true)}
+                    onClick={() => setIsAddDemoVideoOpen(true)}
                   >
                     <span className="text-xs text-center">
                       {newClassVideoDetails.demoVideourl ? "Demo Video ✅" : ""}
@@ -324,7 +327,7 @@ export default function NewClassVideoForm({ index, onCancel }) {
                         ? "border-[#05A8E3] bg-[#B6E9FB] border-dotted"
                         : "border-[#B3B8B8] bg-[#F1F1F1]"
                     }`}
-                    //   onClick={() => setIsAddAnimationOpen(true)}
+                    onClick={() => setIsAddAnimationOpen(true)}
                   >
                     <span className="text-xs text-center">
                       {newClassVideoDetails.animationUrl
@@ -420,6 +423,48 @@ export default function NewClassVideoForm({ index, onCancel }) {
           onAddStep={addClassVideoSteps}
           onRemoveStep={removeClassVideoSteps}
           onClose={() => setIsAddStepsOpen(false)}
+        />
+      )}
+
+      {/* Class Video  */}
+      {isAddClassVideoOpen && (
+        <UploadToVimeo
+          key={`uploadClassVideo${index + 1}`}
+          videoId={newClassVideoDetails.videoId}
+          videoTitle={newClassVideoDetails.title}
+          videoType="class"
+          userAction="create"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsAddClassVideoOpen(false)}
+        />
+      )}
+
+      {/* Demo Video  */}
+      {isAddDemoVideoOpen && (
+        <UploadToVimeo
+          key={`uploadDemoVideo${index + 1}`}
+          videoId={newClassVideoDetails.demoVideoId}
+          videoTitle={`${newClassVideoDetails.title} (Demo)`}
+          videoType="demo"
+          userAction="create"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsAddDemoVideoOpen(false)}
+        />
+      )}
+
+      {/* Animation Video  */}
+      {isAddAnimationOpen && (
+        <UploadToVimeo
+          key={`uploadAnimationVideo${index + 1}`}
+          videoId={newClassVideoDetails.animationVideoId}
+          videoTitle={`${newClassVideoDetails.title} (Animation)`}
+          videoType="animation"
+          userAction="create"
+          onSetVideoId={setVideoIdInStore}
+          onDeleteVideoId={deleteVideoIdFromStore}
+          onClose={() => setIsAddAnimationOpen(false)}
         />
       )}
     </div>

@@ -17,6 +17,7 @@ export default function NewIntroVideoForm({ index, onCancel }) {
     newIntroVideoDetails,
     setNewIntroVideoDetails,
     setNewIntroVideoId,
+    deleteNewIntroVideoId,
     addNewIntroVideo,
     resetNewIntroVideo,
   } = useNewIntroVideoStore();
@@ -231,8 +232,12 @@ export default function NewIntroVideoForm({ index, onCancel }) {
 
       {isAddIntroVideoOpen && (
         <UploadToVimeo
+          userAction="create"
           videoTitle={newIntroVideoDetails.title}
+          videoType="intro"
+          videoId={newIntroVideoDetails.videoId}
           onSetVideoId={setNewIntroVideoId}
+          onDeleteVideoId={deleteNewIntroVideoId}
           onClose={() => setIsAddIntroVideoOpen(false)}
         />
       )}

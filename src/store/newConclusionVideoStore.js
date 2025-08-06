@@ -5,8 +5,8 @@ export const useNewConclusionVideoStore = create((set, get) => ({
   newConclusionVideoDetails: {
     videoType: "conclusion",
     title: "",
-    videoUrl: "https://vimeo.com/manage/videos/1104073672",
-    videoId: "1104073672",
+    videoUrl: "",
+    videoId: "",
     image: null,
     pdf: null,
   },
@@ -17,6 +17,30 @@ export const useNewConclusionVideoStore = create((set, get) => ({
         newConclusionVideoDetails: {
           ...state.newConclusionVideoDetails,
           [name]: value,
+        },
+      };
+    });
+  },
+
+  setVideoIdInStore: (newVideoId, type) => {
+    set((state) => {
+      return {
+        newConclusionVideoDetails: {
+          ...state.newConclusionVideoDetails,
+          videoId: newVideoId,
+          videoUrl: newVideoId,
+        },
+      };
+    });
+  },
+
+  deleteVideoIdFromStore: (videoType) => {
+    set((state) => {
+      return {
+        newConclusionVideoDetails: {
+          ...state.newConclusionVideoDetails,
+          videoId: "",
+          videoUrl: "",
         },
       };
     });
