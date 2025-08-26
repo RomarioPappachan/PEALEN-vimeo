@@ -4,12 +4,13 @@ import Test from "./Test";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
 
 export default function TestAndChallengeItem({ index, video }) {
-  const { setSelectedVideoId } = useCourseTestAndChallengeStore();
+  const { selectedVideoId, setSelectedVideoId } =
+    useCourseTestAndChallengeStore();
   const [isTestOpen, setIsTestOpen] = useState(false);
 
   const handleClick = () => {
-    setSelectedVideoId(video?.id); //set id in store
-    setIsTestOpen(true); // open popup
+    setSelectedVideoId(video?.id); // Set id in store
+    setIsTestOpen(true); // Open popup
   };
 
   return (
@@ -45,7 +46,7 @@ export default function TestAndChallengeItem({ index, video }) {
 
       {isTestOpen && (
         <Test
-          key={video.id}
+          key={selectedVideoId}
           videoId={video.id}
           onClose={() => setIsTestOpen(false)}
         />

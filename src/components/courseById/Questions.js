@@ -1,31 +1,53 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
+import NewQuestionForm from "./NewQuestionForm";
+import { LuChevronLeft, LuChevronRight, LuPlus, LuX } from "react-icons/lu";
+import Question from "./Question";
 
 export default function Questions() {
-  const { selectedVideoId, questions = [] } = useCourseTestAndChallengeStore();
+  const { questions, handleNextQuestion, handlePreviousQuestion } =
+    useCourseTestAndChallengeStore();
+
+  const [isQuestionFormOpen, setIsQuestionFormOpen] = useState(false);
 
   return (
     <>
-      {questions.length > 0 ? (
-        <ul className="list-disc pl-5 space-y-2 text-[var(--text-secondary)]">
-          {questions.map((step, index) => (
-            <li key={index} className="relative pr-6 break-words">
-              <span>{step}</span>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleDeleteStep(index);
-                }}
-                className="absolute right-0 top-0 w-6 h-6 bg-[var(--text-secondary)] text-white hover:bg-red-400 rounded-full flex justify-center items-center cursor-pointer"
-                title="Delete"
-                type="button"
-              >
-                <LuX size={14} />
-              </button>
-            </li>
-          ))}
-        </ul>
+      {!isQuestionFormOpen && (
+        <div className="flex items-center justify-end gap-x-2 mb-4 pe-2">
+          <button
+            type="button"
+            className="mr-10 px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-2 box-border border border-transparent hover:border-[var(--border-secondary)]"
+            onClick={() => {
+              setIsQuestionFormOpen(true);
+            }}
+          >
+            <LuPlus className="text-base" />
+            <span>New Question</span>
+          </button>
+          <button
+            type="button"
+            className="px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-1 box-border border border-transparent hover:border-[var(--border-secondary)]"
+            onClick={handlePreviousQuestion}
+          >
+            <LuChevronLeft />
+            <span>Previous</span>
+          </button>
+          <button
+            type="button"
+            className="px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-1 box-border border border-transparent hover:border-[var(--border-secondary)]"
+            onClick={handleNextQuestion}
+          >
+            <span>Next</span>
+            <LuChevronRight />
+          </button>
+        </div>
+      )}
+
+      {isQuestionFormOpen ? (
+        <NewQuestionForm onClose={() => setIsQuestionFormOpen(false)} />
+      ) : questions.length > 0 ? (
+        <Question />
       ) : (
         <p className="text-[var(--text-secondary)] italic">
           No questions added yet

@@ -8,14 +8,14 @@ export const useNewClassVideoStore = create((set, get) => ({
     subject: "",
     videoSteps: [],
 
-    videoUrl: "https://vimeo.com/manage/videos/1104073672",
-    videoId: "1104073672",
+    videoUrl: "",
+    videoId: "",
 
-    demoVideourl: "https://vimeo.com/manage/videos/1104073672",
-    demoVideoId: "1104073672",
+    demoVideourl: "",
+    demoVideoId: "",
 
-    animationUrl: "https://vimeo.com/manage/videos/1104073672",
-    animationVideoId: "1104073672",
+    animationUrl: "",
+    animationVideoId: "",
 
     image: null,
     pdf: null,

@@ -260,7 +260,7 @@ export default function NewConclusionVideoForm({ index, onCancel }) {
           userAction="create"
           onSetVideoId={setVideoIdInStore}
           onDeleteVideoId={deleteVideoIdFromStore}
-          onClose={() => setIsAddIntroVideoOpen(false)}
+          onClose={() => setIsAddConclusionVideoOpen(false)}
         />
       )}
     </div>

@@ -1,20 +1,32 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useParams } from "next/navigation";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
+import { useNewQuestionStore } from "@/store/newQuestionStore";
 import Questions from "./Questions";
 import Challenge from "./Challenge";
+import NewQuestionForm from "./NewQuestionForm";
 
 export default function Test({ videoId, onClose }) {
   const { courseId } = useParams();
-  const { selectedVideoId } = useCourseTestAndChallengeStore();
+  const { selectedVideoId, getVideoTestAndChallenge, isTestLoading } =
+    useCourseTestAndChallengeStore();
+  const { resetNewQuestionStore } = useNewQuestionStore();
 
-  //   useEffect(() => {
-  //     // API to get test
-  //   }, []);
+  useEffect(() => {
+    // API to get test
+    getVideoTestAndChallenge(selectedVideoId);
+  }, []);
 
   //   if (!selectedVideoId) <div>Loading...</div>;
+
+  function handleClosePopup() {
+    resetNewQuestionStore();
+    onClose();
+  }
+
+  if (isTestLoading) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-center items-start sm:items-center overflow-auto px-4 py-6 bg-black/40 animate-fadeIn">
@@ -26,7 +38,7 @@ export default function Test({ videoId, onClose }) {
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClosePopup}
             className="absolute top-4 right-6 sm:right-8 ml-4 px-3 py-2 rounded-full font-semibold shadow-lg transition disabled:opacity-60 cursor-pointer bg-[var(--border-secondary)] text-white"
             aria-label="Close video steps"
           >
@@ -38,11 +50,8 @@ export default function Test({ videoId, onClose }) {
         {/* Content: flex column with scrollable list and fixed textarea */}
         <div className="flex flex-col px-6 sm:px-8 pt-6 pb-6 flex-1 min-h-0">
           {/* Scrollable Steps List */}
-          <div className="flex-1 overflow-y-auto mb-4 rounded-md border border-[var(--border-primary)] focus-within:border-[var(--border-secondary)] relative p-3.5 min-h-0">
+          <div className="flex-1 overflow-y-auto mb-4 rounded-md relative min-h-40">
             <Questions />
-            {/* {Array.from({ length: 20 }, (_, idx) => {
-              return <Questions key={idx} />;
-            })} */}
           </div>
 
           <div>

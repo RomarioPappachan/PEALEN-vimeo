@@ -1,26 +1,39 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
+import EditChallenge from "./EditChallenge";
+import ViewChallenge from "./ViewChallenge";
 
 export default function Challenge() {
   const { selectedVideoId } = useCourseTestAndChallengeStore();
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  function handleEdit() {
+    if (!isEdit) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+  }
+
   return (
     <>
-      <h2 className="w-full mb-2 text-center text-lg sm:text-xl font-bold text-[var(--text-primary)] truncate">
+      <h2 className="w-full text-center text-lg sm:text-xl font-bold text-[var(--text-primary)] truncate">
         Challenge
       </h2>
-      {/* Always visible textarea */}
 
-      <textarea
-        id={`challenge${selectedVideoId}`}
-        name="challenge"
-        // value={challenge}
-        // onChange={(e) => setNewVideoStep(e.target.value)}
-        // onKeyDown={handleAddStep}
-        placeholder="Enter the Challenge"
-        rows={4}
-        className="w-full resize-none rounded-md p-2 outline-none text-[var(--text-secondary)] placeholder:text-[var(--text-placeholder)] placeholder:italic border border-[var(--border-primary)] focus:border-[var(--border-secondary)] transition"
-      />
+      <div className="flex items-center justify-end">
+        <button
+          className="px-4 py-2 text-sm text-[var(--foreground-primary)] cursor-pointer"
+          type="button"
+          onClick={handleEdit}
+        >
+          {isEdit ? "Cancel" : "Edit"}
+        </button>
+      </div>
+
+      {isEdit ? <EditChallenge /> : <ViewChallenge />}
     </>
   );
 }
