@@ -1,17 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
 
 import { LuCircleCheckBig, LuPen, LuPlus, LuX } from "react-icons/lu";
 
-export default function ViewQuestion() {
-  const [question, setQuestion] = useState([]);
-  const { questions, selectedQuestionIndex } = useCourseTestAndChallengeStore();
-
-  useEffect(() => {
-    setQuestion(questions[selectedQuestionIndex]);
-  }, [selectedQuestionIndex]);
-
+export default function ViewQuestion({ question, selectedQuestionIndex }) {
   return (
     <div className="flex flex-col gap-y-4 snap-start">
       {/* Question */}

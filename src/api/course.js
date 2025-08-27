@@ -153,10 +153,10 @@ export const deleteQuestionById = async (questionId) => {
 };
 
 // Create test challenge using video id
-export const createTestChallenge = async (videoId, challengeData) => {
+export const createTestChallenge = async (testId, challengeData) => {
   try {
     const res = await axiosInstance.post(
-      `/challenge/createChallenge/${videoId}`,
+      `/challenge/createChallenge/${testId}`,
       challengeData
     );
     return res.data;

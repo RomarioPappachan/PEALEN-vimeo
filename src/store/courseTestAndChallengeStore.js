@@ -3,37 +3,16 @@ import { fetchTestByVideoId } from "@/api/course";
 
 export const useCourseTestAndChallengeStore = create((set, get) => ({
   selectedVideoId: null,
+  testId: null,
   challenge: {},
-  questions: [
-    // {
-    //   questionText:
-    //     "In a 1000 metre race, X beats Y by 10 meters or by 2 seconds. Find the time taken by X to complete the race?",
-    //   questionImage: null,
-    //   options: [
-    //     { text: "2 minutes 6 seconds", image: null },
-    //     { text: "2 minutes 12 seconds", image: null },
-    //     { text: "3 minutes 18 seconds", image: null },
-    //     { text: "3 minutes 24 seconds", image: null },
-    //   ],
-    //   correctAnswer: { text: "3 minutes 24 seconds", image: null },
-    // },
-    // {
-    //   questionText:
-    //     "P can run 35m while Q can run 40m. In a 500 meter race, Q beats P by?",
-    //   questionImage: null,
-    //   options: [
-    //     { text: "62.5 m", image: null },
-    //     { text: "455 m", image: null },
-    //     { text: "45 m", image: null },
-    //     { text: "437.5 m", image: null },
-    //   ],
-    //   correctAnswer: { text: "62.5 m", image: null },
-    // },
-  ],
+  questions: [],
 
   selectedQuestionIndex: 0,
 
   isTestLoading: false,
+
+  isQuestionsActionButtonsDisabled: false,
+  isChallengeActionButtonsDisabled: false,
 
   setSelectedVideoId: (videoId) => {
     set({ selectedVideoId: null });
@@ -67,8 +46,17 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
     }
   },
 
+  disableChallengeButtons: (value) => {
+    set({ isChallengeActionButtonsDisabled: value });
+  },
+
+  disableQuestionButtons: (value) => {
+    set({ isQuestionsActionButtonsDisabled: value });
+  },
+
   getVideoTestAndChallenge: async (videoId) => {
     set({
+      testId: null,
       challenge: {},
       questions: [],
       selectedQuestionIndex: 0,
@@ -79,6 +67,7 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
       console.log(res?.challenge);
       if (res.success) {
         set({
+          testId: res?.test?.id,
           challenge: res?.test?.challenge || {},
           questions: res?.test?.questions || [],
           isTestLoading: false,
@@ -88,6 +77,7 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
     } catch (error) {
       console.log(error);
       set({
+        testId: null,
         challenge: {},
         questions: [],
         selectedQuestionIndex: 0,

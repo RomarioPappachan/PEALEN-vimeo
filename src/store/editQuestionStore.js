@@ -3,6 +3,7 @@ import { updateQuestionById } from "@/api/course";
 
 export const useEditQuestionStore = create((set, get) => ({
   updatedQuestion: {
+    id: null,
     questionText: "",
     questionImage: null,
     options: [
@@ -12,6 +13,22 @@ export const useEditQuestionStore = create((set, get) => ({
       { text: "", image: null, id: crypto.randomUUID() },
     ],
     correctAnswer: { id: null, text: "", image: null },
+  },
+
+  // load detail to edit
+  setQuestionToEdit: (questionDetails) => {
+    set((state) => {
+      return {
+        updatedQuestion: {
+          ...state.updatedQuestion,
+          id: questionDetails?.id || null,
+          questionText: questionDetails?.questionText || "",
+          questionImage: questionDetails?.questionImage || null,
+          options: questionDetails?.options,
+          correctAnswer: questionDetails?.correctAnswer,
+        },
+      };
+    });
   },
 
   changeQuestionText: (text) => {
@@ -129,11 +146,11 @@ export const useEditQuestionStore = create((set, get) => ({
     });
   },
 
-  setQuestionToEdit: (questionDetails) => {},
-
-  editQuestionById: async (questionId) => {
+  editQuestionById: async () => {
     try {
       const { updatedQuestion } = get();
+
+      const questionId = updatedQuestion?.id;
 
       const formData = new FormData();
 
@@ -163,6 +180,11 @@ export const useEditQuestionStore = create((set, get) => ({
       // Append question image (if present)
       if (updatedQuestion.questionImage) {
         formData.append("questionImage", updatedQuestion.questionImage);
+      }
+
+      // Append correct answer id (if present)
+      if (updatedQuestion.correctAnswer.id) {
+        formData.append("correctAnswerId", updatedQuestion.correctAnswer.id);
       }
 
       // Append correct answer text (if present)

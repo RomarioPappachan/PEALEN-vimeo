@@ -1,67 +1,64 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
-import { useEditChallengeStore } from "@/store/editChallengeStore";
+import { useNewChallengeStore } from "@/store/newChallengeStore";
 import { LuPen } from "react-icons/lu";
 import toast from "react-hot-toast";
 
-export default function EditChallenge({ onCancel }) {
+export default function NewChallengeForm() {
   const {
+    testId,
     selectedVideoId,
-    challenge,
     getVideoTestAndChallenge,
     isChallengeActionButtonsDisabled,
     disableChallengeButtons,
   } = useCourseTestAndChallengeStore();
+
   const {
-    updatedChallenge,
-    setChallengeToEdit,
+    newChallenge,
     changeChallengeText,
     changeChallengeImage,
-    editChallengeById,
-    resetEditChallengeStore,
-  } = useEditChallengeStore();
+    addNewChallenge,
+    resetNewChallengeStore,
+  } = useNewChallengeStore();
 
-  useEffect(() => {
-    setChallengeToEdit(challenge); // set challenge details to edit
-  }, []);
-
-  const handleUpdateChallenge = async (e) => {
+  const handleAddChallenge = async (e) => {
     e.preventDefault();
-    disableChallengeButtons(true);
+    disableChallengeButtons(true);  // disable every button
 
-    const { description, imageUrl, image } = updatedChallenge;
-    if (!description && !imageUrl && !image) {
+    const { description, image } = newChallenge;
+
+    if (!description && !image) {
       toast("Add challenge text or image");
       return;
     }
-    try {
-      await editChallengeById(challenge.id);
 
-      toast.success("Challenge updated successfully");
-      resetEditChallengeStore();
+    try {
+      await addNewChallenge(testId);
+
+      toast.success("Challenge added successfully");
+      resetNewChallengeStore();
       getVideoTestAndChallenge(selectedVideoId); // reload test for video
-      onCancel(); // close edit form
     } catch (error) {
-      toast.error("Error updating challenge");
+      toast.error("Error adding challenge");
     } finally {
-      disableChallengeButtons(false);
+      disableChallengeButtons(false); // enable button
     }
   };
 
   return (
-    <form onSubmit={handleUpdateChallenge}>
+    <form onSubmit={handleAddChallenge}>
       <div className="w-full p-0.5 border border-[var(--border-primary)] rounded-[10px] focus-within:border-[var(--border-secondary)] flex items-start">
         <textarea
           name="description"
-          value={updatedChallenge.description}
+          value={newChallenge.description}
           className="flex-1 w-full px-4 py-3 text-sm text-[var(--text-secondary)] rounded-[10px] outline-none placeholder:text-[var(--text-placeholder)]"
           placeholder="Type here"
           rows={4}
           onChange={(e) => changeChallengeText(e.target.value)}
         />
         <label className="w-20 h-full px-3 py-1 text-[10px] text-[#72C347] bg-[#E5E5E5] rounded-[10px] text-center cursor-pointer">
-          {updatedChallenge.image?.name || updatedChallenge.imageUrl ? (
+          {newChallenge.image?.name ? (
             <span className="flex items-center">
               <LuPen className="text-sm me-0.5" />
               <span>Edit Image</span>
@@ -84,19 +81,7 @@ export default function EditChallenge({ onCancel }) {
         </label>
       </div>
 
-      <div className="mt-2 flex items-center justify-end gap-4">
-        <button
-          type="button"
-          className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
-            isChallengeActionButtonsDisabled
-              ? "cursor-not-allowed"
-              : "cursor-pointer"
-          }`}
-          disabled={isChallengeActionButtonsDisabled}
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
+      <div className="flex items-center justify-end gap-4 mt-2">
         <button
           className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
             isChallengeActionButtonsDisabled
@@ -106,7 +91,7 @@ export default function EditChallenge({ onCancel }) {
           type="submit"
           disabled={isChallengeActionButtonsDisabled}
         >
-          Update
+          Add Challenge
         </button>
       </div>
     </form>

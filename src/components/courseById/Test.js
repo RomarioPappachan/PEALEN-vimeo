@@ -4,29 +4,27 @@ import { createPortal } from "react-dom";
 import { useParams } from "next/navigation";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
 import { useNewQuestionStore } from "@/store/newQuestionStore";
+import { useNewChallengeStore } from "@/store/newChallengeStore";
 import Questions from "./Questions";
 import Challenge from "./Challenge";
-import NewQuestionForm from "./NewQuestionForm";
 
 export default function Test({ videoId, onClose }) {
   const { courseId } = useParams();
-  const { selectedVideoId, getVideoTestAndChallenge, isTestLoading } =
+  const { selectedVideoId, getVideoTestAndChallenge } =
     useCourseTestAndChallengeStore();
   const { resetNewQuestionStore } = useNewQuestionStore();
+  const { resetNewChallengeStore } = useNewChallengeStore();
 
   useEffect(() => {
     // API to get test
     getVideoTestAndChallenge(selectedVideoId);
   }, []);
 
-  //   if (!selectedVideoId) <div>Loading...</div>;
-
   function handleClosePopup() {
     resetNewQuestionStore();
+    resetNewChallengeStore();
     onClose();
   }
-
-  if (isTestLoading) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-center items-start sm:items-center overflow-auto px-4 py-6 bg-black/40 animate-fadeIn">

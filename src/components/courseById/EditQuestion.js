@@ -33,7 +33,7 @@ export default function EditQuestion({ onCancel }) {
     e.preventDefault();
     try {
       console.log(updatedQuestion);
-      //   const res = await editQuestionById();
+      const res = await editQuestionById();
     } catch (error) {
       console.log(error);
     }
