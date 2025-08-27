@@ -1,5 +1,5 @@
-import { createTestQuestion } from "@/api/course";
 import { create } from "zustand";
+import { createTestQuestion } from "@/api/course";
 
 export const useNewQuestionStore = create((set, get) => ({
   newQuestion: {
@@ -46,10 +46,19 @@ export const useNewQuestionStore = create((set, get) => ({
         return option;
       });
 
+      let updatedCorrectAnswer = state.newQuestion.correctAnswer;
+      const editedOption = updatedOptions[optionIndex];
+
+      // If this option is the selected correct answer, update it too
+      if (editedOption.id === state.newQuestion.correctAnswer.id) {
+        updatedCorrectAnswer = { ...editedOption };
+      }
+
       return {
         newQuestion: {
           ...state.newQuestion,
           options: updatedOptions,
+          correctAnswer: updatedCorrectAnswer,
         },
       };
     });
@@ -65,10 +74,19 @@ export const useNewQuestionStore = create((set, get) => ({
         return option;
       });
 
+      let updatedCorrectAnswer = state.newQuestion.correctAnswer;
+      const editedOption = updatedOptions[optionIndex];
+
+      // If this option is the selected correct answer, update it too
+      if (editedOption.id === state.newQuestion.correctAnswer.id) {
+        updatedCorrectAnswer = { ...editedOption };
+      }
+
       return {
         newQuestion: {
           ...state.newQuestion,
           options: updatedOptions,
+          correctAnswer: updatedCorrectAnswer,
         },
       };
     });
@@ -118,12 +136,21 @@ export const useNewQuestionStore = create((set, get) => ({
   removeOptionField: (optionIndex) => {
     set((state) => {
       const optionsArray = state.newQuestion.options;
+      const removedOption = optionsArray[optionIndex];
       const updatedOptions = optionsArray.filter((_, i) => i !== optionIndex);
+
+      let updatedCorrectAnswer = state.newQuestion.correctAnswer;
+
+      // If removed option was the correct answer → reset it
+      if (removedOption.id === state.newQuestion.correctAnswer.id) {
+        updatedCorrectAnswer = { id: null, text: "", image: null };
+      }
 
       return {
         newQuestion: {
           ...state.newQuestion,
           options: updatedOptions,
+          correctAnswer: updatedCorrectAnswer,
         },
       };
     });

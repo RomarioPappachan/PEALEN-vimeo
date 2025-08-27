@@ -59,7 +59,7 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
       testId: null,
       challenge: {},
       questions: [],
-      selectedQuestionIndex: 0,
+      // selectedQuestionIndex: 0,
       isTestLoading: true,
     });
     try {
@@ -70,6 +70,7 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
           testId: res?.test?.id,
           challenge: res?.test?.challenge || {},
           questions: res?.test?.questions || [],
+          // selectedQuestionIndex: 0,
           isTestLoading: false,
         });
       }
@@ -80,7 +81,7 @@ export const useCourseTestAndChallengeStore = create((set, get) => ({
         testId: null,
         challenge: {},
         questions: [],
-        selectedQuestionIndex: 0,
+        // selectedQuestionIndex: 0,
         isTestLoading: false,
       });
       return error;

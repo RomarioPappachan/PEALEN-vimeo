@@ -4,9 +4,15 @@ import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeSt
 import { useNewQuestionStore } from "@/store/newQuestionStore";
 
 import { LuPen, LuPlus, LuX } from "react-icons/lu";
+import toast from "react-hot-toast";
 
 export default function NewQuestionForm({ onClose }) {
-  const { selectedVideoId } = useCourseTestAndChallengeStore();
+  const {
+    selectedVideoId,
+    questions,
+    disableQuestionButtons,
+    getVideoTestAndChallenge,
+  } = useCourseTestAndChallengeStore();
   const {
     newQuestion,
     changeQuestionText,
@@ -21,13 +27,62 @@ export default function NewQuestionForm({ onClose }) {
   } = useNewQuestionStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState("");
+
+  function validateForm() {
+    const errors = [];
+
+    // 1. Check if either questionText or questionImage or both are present
+    if (!newQuestion.questionText?.trim() && !newQuestion.questionImage) {
+      errors.push("Question text or image is required.");
+    }
+
+    // 2. Check at least 2 options are present
+    if (newQuestion.options.length < 2) {
+      errors.push("At least 2 options are required.");
+    }
+
+    // 3. Check each option: either text or image or both must be present
+    const invalidOptions = newQuestion.options.filter(
+      (opt) => !opt.text?.trim() && !opt.image
+    );
+    if (invalidOptions.length > 0) {
+      errors.push("All options must have text or an image.");
+    }
+
+    // 4. Check if a correct answer is present
+    if (!newQuestion.correctAnswer?.id) {
+      errors.push("A correct answer must be selected.");
+    }
+
+    return errors;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    setFormErrors(""); // clear errors initially
+
+    const errors = validateForm();
+    if (errors.length > 0) {
+      setFormErrors(errors.join(" ")); // combine into single sentence
+      return;
+    }
+
+    setFormErrors(""); // clear errors
+    disableQuestionButtons(true); // all buttons are disabled
+
     try {
-      const res = await addNewQuestion(selectedVideoId);
+      await addNewQuestion(selectedVideoId);
+      toast.success("Question added successfully");
+      resetNewQuestionStore();
+      getVideoTestAndChallenge(selectedVideoId);
+      onClose();
     } catch (error) {
       console.log(error);
+      toast.error("Error on adding question");
+    } finally {
+      disableQuestionButtons(false); // all buttons are enabled
     }
   }
 
@@ -158,21 +213,30 @@ export default function NewQuestionForm({ onClose }) {
         </button>
       </div>
 
+      {/* Error Message */}
+      {formErrors && (
+        <div className="ps-6 text-rose-500 text-sm font-light">
+          {formErrors}
+        </div>
+      )}
+
       {/* buttons  */}
-      <div className="flex justify-end gap-4 mt-6">
-        <button
-          type="button"
-          onClick={() => {
-            onClose();
-            resetNewQuestionStore(); //reset store
-          }}
-          className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
-            isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
-          }`}
-          disabled={isSubmitting}
-        >
-          Cancel
-        </button>
+      <div className="flex justify-end gap-4 mt-2">
+        {questions.length > 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              resetNewQuestionStore(); //reset store
+            }}
+            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
+              isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </button>
+        )}
         <button
           type="submit"
           className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${

@@ -3,20 +3,18 @@ import React, { useEffect, useState } from "react";
 
 import ViewQuestion from "./ViewQuestion";
 import EditQuestion from "./EditQuestion";
-import { deleteQuestionById } from "@/api/course";
 import { useCourseTestAndChallengeStore } from "@/store/courseTestAndChallengeStore";
-import toast from "react-hot-toast";
+import { LuChevronLeft, LuChevronRight, LuPlus } from "react-icons/lu";
 
-export default function Question() {
+export default function Question({ onFormOpen }) {
   const {
     questions,
     selectedQuestionIndex,
-    selectedVideoId,
-    getVideoTestAndChallenge,
+    handleNextQuestion,
+    handlePreviousQuestion,
   } = useCourseTestAndChallengeStore();
-  const [question, setQuestion] = useState([]);
 
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [question, setQuestion] = useState([]);
 
   const [isEditQuestion, setIsEditQuestion] = useState(false);
 
@@ -24,56 +22,48 @@ export default function Question() {
     setQuestion(questions[selectedQuestionIndex]);
   }, [selectedQuestionIndex]);
 
-  const handleDeleteQuestionById = async (e) => {
-    e.preventDefault();
-    setIsDeleting(true);
-    try {
-      const res = await deleteQuestionById(question.id);
-      console.log(res);
-      toast.success("Deleted question successfully");
-      await getVideoTestAndChallenge(selectedVideoId);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error deleting question");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
   return (
     <>
       {!isEditQuestion ? (
-        <ViewQuestion
-          question={question}
-          selectedQuestionIndex={selectedQuestionIndex}
-        />
+        <>
+          <div className="flex items-center justify-end gap-x-2 mb-4 pe-2">
+            <button
+              type="button"
+              className="mr-10 px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-2 box-border border border-transparent hover:border-[var(--border-secondary)]"
+              onClick={onFormOpen}
+            >
+              <LuPlus className="text-base" />
+              <span>New Question</span>
+            </button>
+            <button
+              type="button"
+              className="px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-1 box-border border border-transparent hover:border-[var(--border-secondary)]"
+              onClick={handlePreviousQuestion}
+            >
+              <LuChevronLeft />
+              <span>Previous</span>
+            </button>
+            <span className="text-sm font-semibold text-[var(--border-secondary)]">
+              {selectedQuestionIndex + 1} of {questions.length}
+            </span>
+            <button
+              type="button"
+              className="px-2 py-1 rounded-sm text-sm font-semibold transition disabled:opacity-60 cursor-pointer text-[var(--border-secondary)] flex items-center justify-center gap-x-1 box-border border border-transparent hover:border-[var(--border-secondary)]"
+              onClick={handleNextQuestion}
+            >
+              <span>Next</span>
+              <LuChevronRight />
+            </button>
+          </div>
+
+          <ViewQuestion
+            question={question}
+            selectedQuestionIndex={selectedQuestionIndex}
+            onEditOpen={() => setIsEditQuestion(true)}
+          />
+        </>
       ) : (
         <EditQuestion onCancel={() => setIsEditQuestion(false)} />
-      )}
-      {/* buttons  */}
-      {!isEditQuestion && (
-        <div className="flex justify-end gap-4 mt-6">
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl ${
-              isDeleting ? "cursor-not-allowed" : "cursor-pointer"
-            }`}
-            disabled={isDeleting}
-            onClick={handleDeleteQuestionById}
-          >
-            Delete
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-semibold text-white bg-[#72C347] rounded-xl ${
-              isDeleting ? "cursor-not-allowed" : "cursor-pointer"
-            }`}
-            disabled={isDeleting}
-            onClick={() => setIsEditQuestion(true)}
-          >
-            Edit Question
-          </button>
-        </div>
       )}
     </>
   );
